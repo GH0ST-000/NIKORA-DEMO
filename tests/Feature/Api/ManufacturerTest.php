@@ -416,4 +416,70 @@ describe('API Manufacturers', function (): void {
         expect(count($response->json('data')))->toBe(25);
         expect($response->json('meta.next_cursor'))->not->toBeNull();
     });
+
+    test('manufacturer list respects custom per_page parameter', function (): void {
+        Manufacturer::factory()->count(30)->create();
+
+        $loginResponse = $this->postJson('/api/auth/login', [
+            'email' => 'admin@nikora.ge',
+            'password' => 'password',
+        ]);
+
+        $token = $loginResponse->json('access_token');
+
+        $response = $this->withHeader('Authorization', "Bearer {$token}")
+            ->getJson('/api/manufacturers?per_page=10');
+
+        $response->assertStatus(200);
+
+        expect(count($response->json('data')))->toBe(10);
+    });
+
+    test('manufacturer list enforces max per_page limit', function (): void {
+        Manufacturer::factory()->count(150)->create();
+
+        $loginResponse = $this->postJson('/api/auth/login', [
+            'email' => 'admin@nikora.ge',
+            'password' => 'password',
+        ]);
+
+        $token = $loginResponse->json('access_token');
+
+        $response = $this->withHeader('Authorization', "Bearer {$token}")
+            ->getJson('/api/manufacturers?per_page=200');
+
+        $response->assertStatus(200);
+
+        expect(count($response->json('data')))->toBeLessThanOrEqual(100);
+    });
+
+    test('manufacturer pagination cursor works for next page', function (): void {
+        Manufacturer::factory()->count(30)->create();
+
+        $loginResponse = $this->postJson('/api/auth/login', [
+            'email' => 'admin@nikora.ge',
+            'password' => 'password',
+        ]);
+
+        $token = $loginResponse->json('access_token');
+
+        $firstPageResponse = $this->withHeader('Authorization', "Bearer {$token}")
+            ->getJson('/api/manufacturers?per_page=10');
+
+        $firstPageResponse->assertStatus(200);
+        $firstPageData = $firstPageResponse->json('data');
+        expect(count($firstPageData))->toBe(10);
+
+        $nextCursor = $firstPageResponse->json('meta.next_cursor');
+        expect($nextCursor)->not->toBeNull();
+
+        $secondPageResponse = $this->withHeader('Authorization', "Bearer {$token}")
+            ->getJson("/api/manufacturers?per_page=10&cursor={$nextCursor}");
+
+        $secondPageResponse->assertStatus(200);
+        $secondPageData = $secondPageResponse->json('data');
+        expect(count($secondPageData))->toBe(10);
+
+        expect($firstPageData[0]['id'])->not->toBe($secondPageData[0]['id']);
+    });
 });

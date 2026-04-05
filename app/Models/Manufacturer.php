@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Database\Factories\ManufacturerFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
@@ -41,6 +42,17 @@ class Manufacturer extends Model
 {
     /** @use HasFactory<ManufacturerFactory> */
     use HasFactory;
+
+    /**
+     * @param  Builder<Manufacturer>  $query
+     * @return Builder<Manufacturer>
+     */
+    public function scopeOrdered(Builder $query): Builder
+    {
+        return $query
+            ->orderBy('full_name')
+            ->orderBy('id');
+    }
 
     protected function casts(): array
     {
