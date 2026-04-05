@@ -80,6 +80,118 @@ CREATE TABLE manufacturers (
 
 ---
 
+## Pagination
+
+The Manufacturer API uses **cursor pagination** for efficient querying of large datasets.
+
+### How Cursor Pagination Works
+
+Unlike traditional offset-based pagination (which can be slow on large datasets), cursor pagination uses a pointer to navigate through records. This provides:
+- **Consistent performance** regardless of dataset size
+- **No skipped or duplicate records** when data changes between requests
+- **Better database performance** using indexed columns
+
+### Query Parameters
+
+| Parameter | Type | Default | Range | Description |
+|-----------|------|---------|-------|-------------|
+| `per_page` | integer | 25 | 1-100 | Number of items per page |
+| `cursor` | string | null | - | Cursor token from previous response |
+
+### Example Requests
+
+```bash
+# Get first page (default 25 items)
+GET /api/manufacturers
+Authorization: Bearer {token}
+
+# Custom page size (10 items)
+GET /api/manufacturers?per_page=10
+Authorization: Bearer {token}
+
+# Navigate to next page using cursor
+GET /api/manufacturers?per_page=10&cursor=eyJmdWxsX25hbWUiOiJBQkMi...
+Authorization: Bearer {token}
+```
+
+### Response Structure
+
+```json
+{
+  "data": [
+    {
+      "id": 1,
+      "full_name": "ABC Manufacturing LLC",
+      // ... other fields
+    }
+  ],
+  "meta": {
+    "path": "http://api/manufacturers",
+    "per_page": 25,
+    "next_cursor": "eyJmdWxs...",  // Auto-generated token (copy & use as-is)
+    "prev_cursor": null              // null = no previous page
+  },
+  "links": {
+    "first": "http://api/manufacturers",
+    "last": null,
+    "prev": null,
+    "next": "http://api/manufacturers?cursor=eyJmdWxs..."  // Full URL ready to use
+  }
+}
+```
+
+**Important**: The `next_cursor` and `prev_cursor` are auto-generated tokens. You don't need to understand or create them - just copy the value from the response and use it in your next request!
+
+### Navigation
+
+1. **First Page**: Request without `cursor` parameter
+   ```bash
+   GET /api/manufacturers
+   ```
+
+2. **Next Page**: Use `meta.next_cursor` from response
+   ```bash
+   GET /api/manufacturers?cursor={value_from_next_cursor}
+   ```
+   Or simply use the full URL from `links.next`
+
+3. **Previous Page**: Use `meta.prev_cursor` from response
+   ```bash
+   GET /api/manufacturers?cursor={value_from_prev_cursor}
+   ```
+
+4. **Last Page**: When `meta.next_cursor` is `null`, you're on the last page
+
+### Practical Example
+
+```bash
+# Step 1: Get first page
+curl -X GET "http://localhost:8000/api/manufacturers?per_page=5" \
+  -H "Authorization: Bearer YOUR_TOKEN"
+
+# Response includes:
+# "next_cursor": "eyJmdWxsX25hbWUiOiJDTiBJbmMiLCJpZCI6NSwiX3BvaW50c1RvTmV4dEl0ZW1zIjp0cnVlfQ"
+
+# Step 2: Get next page - just copy the cursor value
+curl -X GET "http://localhost:8000/api/manufacturers?per_page=5&cursor=eyJmdWxsX25hbWUiOiJDTiBJbmMiLCJpZCI6NSwiX3BvaW50c1RvTmV4dEl0ZW1zIjp0cnVlfQ" \
+  -H "Authorization: Bearer YOUR_TOKEN"
+
+# Or even simpler - use the full URL from "links.next"
+curl -X GET "http://localhost:8000/api/manufacturers?per_page=5&cursor=..." \
+  -H "Authorization: Bearer YOUR_TOKEN"
+```
+
+**Pro Tip**: Most HTTP clients can automatically follow `links.next` URLs, making pagination even easier!
+
+### Implementation Details
+
+- Records are sorted by `full_name` and `id` for consistent ordering
+- Maximum 100 items per page (enforced)
+- Minimum 1 item per page (enforced)
+- Invalid `per_page` values are clamped to valid range
+
+---
+
 ## API Endpoints
 
 ### Authentication Required
@@ -94,6 +206,22 @@ Authorization: Bearer {token}
 **GET** `/api/manufacturers`
 
 Returns paginated list of manufacturers using cursor pagination.
+
+**Query Parameters:**
+- `per_page` (optional): Number of items per page (default: 25, min: 1, max: 100)
+- `cursor` (optional): Cursor for next/previous page (provided in response)
+
+**Example Requests:**
+```bash
+# Default pagination (25 items)
+GET /api/manufacturers
+
+# Custom page size
+GET /api/manufacturers?per_page=10
+
+# Navigate to next page
+GET /api/manufacturers?cursor=eyJmdWxsX25hbWUiOiJBQkMi...
+```
 
 **Response:**
 ```json
@@ -117,20 +245,26 @@ Returns paginated list of manufacturers using cursor pagination.
     }
   ],
   "meta": {
-    "next_cursor": "...",
-    "prev_cursor": "..."
+    "path": "http://api/manufacturers",
+    "per_page": 25,
+    "next_cursor": "eyJmdWxsX25hbWUiOiJYWVoiLCJpZCI6MjUsIl9wb2ludHNUb05leHRJdGVtcyI6dHJ1ZX0",
+    "prev_cursor": null
   },
   "links": {
-    "next": "http://api/manufacturers?cursor=...",
-    "prev": null
+    "first": "http://api/manufacturers",
+    "last": null,
+    "prev": null,
+    "next": "http://api/manufacturers?cursor=eyJmdWxsX25hbWUiOiJYWVoiLCJpZCI6MjUsIl9wb2ludHNUb05leHRJdGVtcyI6dHJ1ZX0"
   }
 }
 ```
 
 **Features:**
-- Cursor pagination (25 items per page)
-- Ordered by `full_name` then `id`
-- Optimized for large datasets
+- Cursor pagination (configurable items per page, default: 25)
+- Ordered by `full_name` then `id` for consistent pagination
+- Optimized for large datasets (no offset-based queries)
+- Use `next_cursor` from response to fetch next page
+- Use `prev_cursor` to navigate backwards
 
 ---
 

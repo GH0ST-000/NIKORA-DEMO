@@ -25,10 +25,12 @@ class ManufacturerController extends Controller
     {
         $this->authorize('viewAny', Manufacturer::class);
 
+        $perPage = (int) request()->query('per_page', '25');
+        $perPage = min(max($perPage, 1), 100);
+
         $manufacturers = Manufacturer::query()
-            ->orderBy('full_name')
-            ->orderBy('id')
-            ->cursorPaginate(25);
+            ->ordered()
+            ->cursorPaginate($perPage);
 
         return ManufacturerResource::collection($manufacturers);
     }
