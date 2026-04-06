@@ -6,6 +6,17 @@ use App\Models\User;
 
 class UserPolicy
 {
+    public function viewDashboard(User $user): bool
+    {
+        return $user->hasAnyPermission([
+            'view_dashboard',
+            'view_any_batch',
+            'view_any_product',
+            'view_any_manufacturer',
+            'view_any_receiving',
+        ], 'web');
+    }
+
     public function viewAny(User $user): bool
     {
         return $user->hasAnyPermission(['view_any_user', 'view_own_branch_user'], 'web');

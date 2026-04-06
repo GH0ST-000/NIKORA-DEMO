@@ -170,6 +170,46 @@ Authorization: Bearer {your_token}
 
 ---
 
+## Dashboard
+
+| Method | Endpoint | Description | Pagination |
+|--------|----------|-------------|------------|
+| GET | `/dashboard/stats` | Get comprehensive statistics | - |
+| GET | `/dashboard/expiring-batches` | Get batches expiring soon | ✅ Cursor |
+| GET | `/dashboard/recent-additions` | Get recently added items | - |
+| GET | `/dashboard/visualization` | Get visualization data | - |
+
+📚 **Documentation:** [DASHBOARD_API.md](DASHBOARD_API.md)
+
+**Key Features:**
+- Real-time statistics (products, batches, manufacturers, receivings)
+- Expiring batch monitoring with customizable timeframes
+- Recent additions tracking (manufacturers, products)
+- Multiple visualization types for charts and graphs
+- Inventory distribution by location
+
+**Available Visualizations:**
+- `overview` - High-level system overview
+- `expiry_timeline` - Batches grouped by expiry ranges
+- `product_categories` - Product count by category
+- `receiving_status` - Receiving records by status
+- `batch_status` - Batches by status
+- `inventory_by_location` - Inventory by warehouse location
+
+---
+
+## Roles & Permissions
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/roles` | List all roles |
+| GET | `/roles/{id}` | View role details |
+| GET | `/permissions` | List all permissions |
+| POST | `/users/{user}/roles` | Assign role to user |
+| DELETE | `/users/{user}/roles/{role}` | Remove role from user |
+
+---
+
 ## Pagination
 
 All list endpoints use **cursor pagination** for optimal performance.
