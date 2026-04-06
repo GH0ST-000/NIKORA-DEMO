@@ -187,6 +187,48 @@ parameters:
 			path: app/Actions/Receiving/CreateReceivingAction.php
 
 		-
+			message: '#^Method App\\Actions\\Ticket\\CloseTicketAction\:\:execute\(\) should return App\\Models\\Ticket but returns App\\Models\\Ticket\|null\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Actions/Ticket/CloseTicketAction.php
+
+		-
+			message: '#^Call to an undefined static method App\\Models\\Ticket\:\:create\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: app/Actions/Ticket/CreateTicketAction.php
+
+		-
+			message: '#^Method App\\Actions\\Ticket\\CreateTicketAction\:\:execute\(\) should return App\\Models\\Ticket but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Actions/Ticket/CreateTicketAction.php
+
+		-
+			message: '#^Method App\\Actions\\Ticket\\ReopenTicketAction\:\:execute\(\) should return App\\Models\\Ticket but returns App\\Models\\Ticket\|null\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Actions/Ticket/ReopenTicketAction.php
+
+		-
+			message: '#^Method App\\Actions\\Ticket\\UpdateTicketAction\:\:execute\(\) should return App\\Models\\Ticket but returns App\\Models\\Ticket\|null\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Actions/Ticket/UpdateTicketAction.php
+
+		-
+			message: '#^Call to an undefined static method App\\Models\\TicketMessage\:\:create\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: app/Actions/TicketMessage/CreateTicketMessageAction.php
+
+		-
+			message: '#^Method App\\Actions\\TicketMessage\\CreateTicketMessageAction\:\:execute\(\) should return App\\Models\\TicketMessage but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Actions/TicketMessage/CreateTicketMessageAction.php
+
+		-
 			message: '#^Call to an undefined static method App\\Models\\WarehouseLocation\:\:create\(\)\.$#'
 			identifier: staticMethod.notFound
 			count: 1
@@ -361,6 +403,120 @@ parameters:
 			path: app/Http/Controllers/Api/ReceivingController.php
 
 		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Ticket\>\:\:forUser\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Controllers/Api/TicketController.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Ticket\>\:\:ordered\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Controllers/Api/TicketController.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Ticket\>\:\:priority\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Controllers/Api/TicketController.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Ticket\>\:\:search\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Controllers/Api/TicketController.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Ticket\>\:\:status\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Controllers/Api/TicketController.php
+
+		-
+			message: '#^Cannot access offset ''closed_at'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: app/Http/Controllers/Api/TicketController.php
+
+		-
+			message: '#^Cannot access offset ''status'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: app/Http/Controllers/Api/TicketController.php
+
+		-
+			message: '#^Cannot call method cursorPaginate\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Controllers/Api/TicketController.php
+
+		-
+			message: '#^Cannot cast mixed to int\.$#'
+			identifier: cast.int
+			count: 1
+			path: app/Http/Controllers/Api/TicketController.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 3
+			path: app/Http/Controllers/Api/TicketController.php
+
+		-
+			message: '#^Parameter \#1 \$array of function array_intersect_key expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/Api/TicketController.php
+
+		-
+			message: '#^Parameter \#1 \$data of method App\\Actions\\Ticket\\CreateTicketAction\:\:execute\(\) expects array\<string, mixed\>, array\<mixed, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/Api/TicketController.php
+
+		-
+			message: '#^Parameter \#1 \.\.\.\$arrays of function array_merge expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/Api/TicketController.php
+
+		-
+			message: '#^Parameter \#2 \$data of method App\\Actions\\Ticket\\UpdateTicketAction\:\:execute\(\) expects array\<string, mixed\>, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/Api/TicketController.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\TicketMessage\>\:\:ordered\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Controllers/Api/TicketMessageController.php
+
+		-
+			message: '#^Cannot call method cursorPaginate\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Controllers/Api/TicketMessageController.php
+
+		-
+			message: '#^Cannot cast mixed to int\.$#'
+			identifier: cast.int
+			count: 1
+			path: app/Http/Controllers/Api/TicketMessageController.php
+
+		-
+			message: '#^Parameter \#1 \$data of method App\\Actions\\TicketMessage\\CreateTicketMessageAction\:\:execute\(\) expects array\<string, mixed\>, array\<mixed, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/Api/TicketMessageController.php
+
+		-
+			message: '#^Parameter \#1 \.\.\.\$arrays of function array_merge expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/Api/TicketMessageController.php
+
+		-
 			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\WarehouseLocation\>\:\:ordered\(\)\.$#'
 			identifier: method.notFound
 			count: 1
@@ -401,6 +557,18 @@ parameters:
 			identifier: cast.string
 			count: 8
 			path: app/Http/Requests/Api/CreateProductRequest.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 1
+			path: app/Http/Requests/Api/CreateTicketMessageRequest.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 2
+			path: app/Http/Requests/Api/CreateTicketRequest.php
 
 		-
 			message: '#^Cannot cast mixed to string\.$#'
@@ -453,6 +621,12 @@ parameters:
 		-
 			message: '#^Cannot cast mixed to string\.$#'
 			identifier: cast.string
+			count: 2
+			path: app/Http/Requests/Api/UpdateTicketRequest.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
 			count: 4
 			path: app/Http/Requests/Api/UpdateWarehouseLocationRequest.php
 
@@ -491,6 +665,24 @@ parameters:
 			identifier: nullsafe.neverNull
 			count: 2
 			path: app/Http/Resources/ProductResource.php
+
+		-
+			message: '#^Using nullsafe method call on non\-nullable type Illuminate\\Support\\Carbon\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 2
+			path: app/Http/Resources/TicketAttachmentResource.php
+
+		-
+			message: '#^Using nullsafe method call on non\-nullable type Illuminate\\Support\\Carbon\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 2
+			path: app/Http/Resources/TicketMessageResource.php
+
+		-
+			message: '#^Using nullsafe method call on non\-nullable type Illuminate\\Support\\Carbon\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 2
+			path: app/Http/Resources/TicketResource.php
 
 		-
 			message: '#^Access to an undefined property App\\Models\\User\:\:\$roles\.$#'
@@ -593,6 +785,60 @@ parameters:
 			identifier: return.type
 			count: 1
 			path: app/Models/Receiving.php
+
+		-
+			message: '#^Method App\\Models\\Ticket\:\:assignee\(\) should return Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\<App\\Models\\User, App\\Models\\Ticket\> but returns Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\<App\\Models\\User, \$this\(App\\Models\\Ticket\)\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Models/Ticket.php
+
+		-
+			message: '#^Method App\\Models\\Ticket\:\:attachments\(\) should return Illuminate\\Database\\Eloquent\\Relations\\HasMany\<App\\Models\\TicketAttachment, App\\Models\\Ticket\> but returns Illuminate\\Database\\Eloquent\\Relations\\HasMany\<App\\Models\\TicketAttachment, \$this\(App\\Models\\Ticket\)\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Models/Ticket.php
+
+		-
+			message: '#^Method App\\Models\\Ticket\:\:messages\(\) should return Illuminate\\Database\\Eloquent\\Relations\\HasMany\<App\\Models\\TicketMessage, App\\Models\\Ticket\> but returns Illuminate\\Database\\Eloquent\\Relations\\HasMany\<App\\Models\\TicketMessage, \$this\(App\\Models\\Ticket\)\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Models/Ticket.php
+
+		-
+			message: '#^Method App\\Models\\Ticket\:\:scopeOrdered\(\) should return Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Ticket\> but returns Illuminate\\Database\\Query\\Builder\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Models/Ticket.php
+
+		-
+			message: '#^Method App\\Models\\Ticket\:\:user\(\) should return Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\<App\\Models\\User, App\\Models\\Ticket\> but returns Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\<App\\Models\\User, \$this\(App\\Models\\Ticket\)\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Models/Ticket.php
+
+		-
+			message: '#^Method App\\Models\\TicketAttachment\:\:ticket\(\) should return Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\<App\\Models\\Ticket, App\\Models\\TicketAttachment\> but returns Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\<App\\Models\\Ticket, \$this\(App\\Models\\TicketAttachment\)\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Models/TicketAttachment.php
+
+		-
+			message: '#^Method App\\Models\\TicketMessage\:\:scopeOrdered\(\) should return Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\TicketMessage\> but returns Illuminate\\Database\\Query\\Builder\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Models/TicketMessage.php
+
+		-
+			message: '#^Method App\\Models\\TicketMessage\:\:ticket\(\) should return Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\<App\\Models\\Ticket, App\\Models\\TicketMessage\> but returns Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\<App\\Models\\Ticket, \$this\(App\\Models\\TicketMessage\)\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Models/TicketMessage.php
+
+		-
+			message: '#^Method App\\Models\\TicketMessage\:\:user\(\) should return Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\<App\\Models\\User, App\\Models\\TicketMessage\> but returns Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\<App\\Models\\User, \$this\(App\\Models\\TicketMessage\)\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Models/TicketMessage.php
 
 		-
 			message: '#^Method App\\Models\\WarehouseLocation\:\:parent\(\) should return Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\<App\\Models\\WarehouseLocation, App\\Models\\WarehouseLocation\> but returns Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\<App\\Models\\WarehouseLocation, \$this\(App\\Models\\WarehouseLocation\)\>\.$#'
