@@ -19,6 +19,132 @@ parameters:
 			path: app/Actions/Batch/UpdateBatchAction.php
 
 		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Batch\>\:\:active\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Actions/Dashboard/GetDashboardStatsAction.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Batch\>\:\:blocked\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Actions/Dashboard/GetDashboardStatsAction.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Batch\>\:\:expired\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Actions/Dashboard/GetDashboardStatsAction.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Batch\>\:\:expiringWithinDays\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Actions/Dashboard/GetDashboardStatsAction.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Batch\>\:\:recalled\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Actions/Dashboard/GetDashboardStatsAction.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Product\>\:\:active\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Actions/Dashboard/GetDashboardStatsAction.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Product\>\:\:imported\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Actions/Dashboard/GetDashboardStatsAction.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Product\>\:\:local\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Actions/Dashboard/GetDashboardStatsAction.php
+
+		-
+			message: '#^Cannot call method count\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 8
+			path: app/Actions/Dashboard/GetDashboardStatsAction.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Batch\>\:\:expiringWithinDays\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Actions/Dashboard/GetExpiringBatchesAction.php
+
+		-
+			message: '#^Cannot call method cursorPaginate\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Actions/Dashboard/GetExpiringBatchesAction.php
+
+		-
+			message: '#^Cannot call method orderBy\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: app/Actions/Dashboard/GetExpiringBatchesAction.php
+
+		-
+			message: '#^Cannot call method where\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Actions/Dashboard/GetExpiringBatchesAction.php
+
+		-
+			message: '#^Cannot call method whereIn\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Actions/Dashboard/GetExpiringBatchesAction.php
+
+		-
+			message: '#^Cannot call method with\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Actions/Dashboard/GetExpiringBatchesAction.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between App\\Models\\Manufacturer and null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: app/Actions/Dashboard/GetRecentAdditionsAction.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Batch\>\:\:active\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Actions/Dashboard/GetVisualizationDataAction.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Batch\>\:\:expiringWithinDays\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Actions/Dashboard/GetVisualizationDataAction.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Support\\Collection\<int, App\\Models\\Batch\>\:\:load\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Actions/Dashboard/GetVisualizationDataAction.php
+
+		-
+			message: '#^Call to an undefined static method App\\Models\\Batch\:\:expiringWithinDays\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: app/Actions/Dashboard/GetVisualizationDataAction.php
+
+		-
+			message: '#^Cannot call method count\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 3
+			path: app/Actions/Dashboard/GetVisualizationDataAction.php
+
+		-
 			message: '#^Call to an undefined static method App\\Models\\Manufacturer\:\:create\(\)\.$#'
 			identifier: staticMethod.notFound
 			count: 1
