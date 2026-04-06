@@ -37,6 +37,7 @@ class RolePermissionSeeder extends Seeder
             'recall',
             'audit',
             'manufacturer',
+            'ticket',
         ];
 
         foreach ($resources as $resource) {
@@ -44,6 +45,9 @@ class RolePermissionSeeder extends Seeder
                 Permission::create(['name' => "{$permission}_{$resource}"]);
             }
         }
+
+        $superAdmin = Role::create(['name' => 'Super Admin']);
+        $superAdmin->givePermissionTo(Permission::all());
 
         $recallAdmin = Role::create(['name' => 'Recall Admin']);
         $recallAdmin->givePermissionTo(Permission::all());

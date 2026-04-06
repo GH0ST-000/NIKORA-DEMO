@@ -8,6 +8,8 @@ use App\Http\Controllers\Api\PermissionController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\ReceivingController;
 use App\Http\Controllers\Api\RoleController;
+use App\Http\Controllers\Api\TicketController;
+use App\Http\Controllers\Api\TicketMessageController;
 use App\Http\Controllers\Api\UserRoleController;
 use App\Http\Controllers\Api\WarehouseLocationController;
 use Illuminate\Support\Facades\Route;
@@ -38,4 +40,10 @@ Route::middleware('auth:api')->group(function (): void {
     Route::apiResource('batches', BatchController::class);
     Route::apiResource('warehouse-locations', WarehouseLocationController::class);
     Route::apiResource('receivings', ReceivingController::class);
+
+    Route::apiResource('tickets', TicketController::class);
+    Route::post('tickets/{ticket}/close', [TicketController::class, 'close']);
+    Route::post('tickets/{ticket}/reopen', [TicketController::class, 'reopen']);
+    Route::get('tickets/{ticket}/messages', [TicketMessageController::class, 'index']);
+    Route::post('tickets/{ticket}/messages', [TicketMessageController::class, 'store']);
 });
