@@ -33,7 +33,7 @@ final class BatchResource extends JsonResource
             'unit' => $this->unit,
             'status' => $this->status,
             'warehouse_location_id' => $this->warehouse_location_id,
-            'warehouse_location' => $this->whenLoaded('warehouseLocation', fn () => [
+            'warehouse_location' => $this->whenLoaded('warehouseLocation', fn (): array => [
                 'id' => $this->warehouseLocation->id,
                 'name' => $this->warehouseLocation->name,
                 'code' => $this->warehouseLocation->code,
@@ -42,14 +42,14 @@ final class BatchResource extends JsonResource
             'receiving_temperature' => $this->receiving_temperature,
             'packaging_condition' => $this->packaging_condition,
             'product_id' => $this->product_id,
-            'product' => $this->whenLoaded('product', fn () => [
+            'product' => $this->whenLoaded('product', fn (): array => [
                 'id' => $this->product->id,
                 'name' => $this->product->name,
                 'sku' => $this->product->sku,
                 'category' => $this->product->category,
             ]),
             'received_by_user_id' => $this->received_by_user_id,
-            'received_by' => $this->whenLoaded('receivedBy', fn () => $this->receivedBy ? [
+            'received_by' => $this->whenLoaded('receivedBy', fn (): ?array => $this->receivedBy ? [
                 'id' => $this->receivedBy->id,
                 'name' => $this->receivedBy->name,
                 'email' => $this->receivedBy->email,

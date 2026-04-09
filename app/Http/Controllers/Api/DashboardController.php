@@ -35,9 +35,7 @@ final class DashboardController extends Controller
     {
         $this->authorize('viewDashboard', User::class);
 
-        /** @var int $days */
         $days = (int) request()->query('days', '30');
-        /** @var int $perPage */
         $perPage = (int) request()->query('per_page', '25');
 
         return $this->expiringBatchesAction->execute($days, $perPage);
@@ -47,9 +45,7 @@ final class DashboardController extends Controller
     {
         $this->authorize('viewDashboard', User::class);
 
-        /** @var int $days */
         $days = (int) request()->query('days', '7');
-        /** @var int $limit */
         $limit = (int) request()->query('limit', '10');
 
         $additions = $this->recentAdditionsAction->execute($days, $limit);

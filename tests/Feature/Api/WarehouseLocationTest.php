@@ -62,7 +62,7 @@ test('can view single warehouse location', function (): void {
     $location = WarehouseLocation::factory()->create();
 
     $response = $this->actingAs($this->user, 'api')
-        ->getJson("/api/warehouse-locations/{$location->id}");
+        ->getJson('/api/warehouse-locations/'.$location->id);
 
     $response->assertOk()
         ->assertJsonPath('data.id', $location->id)
@@ -73,7 +73,7 @@ test('can update warehouse location', function (): void {
     $location = WarehouseLocation::factory()->create();
 
     $response = $this->actingAs($this->user, 'api')
-        ->putJson("/api/warehouse-locations/{$location->id}", [
+        ->putJson('/api/warehouse-locations/'.$location->id, [
             'name' => 'Updated Warehouse',
             'is_active' => false,
         ]);
@@ -87,7 +87,7 @@ test('can delete warehouse location', function (): void {
     $location = WarehouseLocation::factory()->create();
 
     $response = $this->actingAs($this->user, 'api')
-        ->deleteJson("/api/warehouse-locations/{$location->id}");
+        ->deleteJson('/api/warehouse-locations/'.$location->id);
 
     $response->assertOk();
 
@@ -201,7 +201,7 @@ test('loads parent relationship', function (): void {
     $child = WarehouseLocation::factory()->create(['parent_id' => $parent->id]);
 
     $response = $this->actingAs($this->user, 'api')
-        ->getJson("/api/warehouse-locations/{$child->id}");
+        ->getJson('/api/warehouse-locations/'.$child->id);
 
     $response->assertOk()
         ->assertJsonStructure([
@@ -234,7 +234,7 @@ test('loads responsible user relationship', function (): void {
     ]);
 
     $response = $this->actingAs($this->user, 'api')
-        ->getJson("/api/warehouse-locations/{$location->id}");
+        ->getJson('/api/warehouse-locations/'.$location->id);
 
     $response->assertOk()
         ->assertJsonStructure([
@@ -367,7 +367,7 @@ test('trims nullable fields in update location request', function (): void {
     $location = WarehouseLocation::factory()->create();
 
     $response = $this->actingAs($this->user, 'api')
-        ->putJson("/api/warehouse-locations/{$location->id}", [
+        ->putJson('/api/warehouse-locations/'.$location->id, [
             'description' => '  Updated description  ',
             'address' => '  456 New St  ',
         ]);
@@ -388,7 +388,7 @@ test('can update location with nullable fields set to null', function (): void {
     ]);
 
     $response = $this->actingAs($this->user, 'api')
-        ->putJson("/api/warehouse-locations/{$location->id}", [
+        ->putJson('/api/warehouse-locations/'.$location->id, [
             'description' => null,
             'address' => null,
         ]);
@@ -407,7 +407,7 @@ test('can update warehouse location name and code', function (): void {
     ]);
 
     $response = $this->actingAs($this->user, 'api')
-        ->putJson("/api/warehouse-locations/{$location->id}", [
+        ->putJson('/api/warehouse-locations/'.$location->id, [
             'name' => '  New Name  ',
             'code' => '  NEW-001  ',
         ]);

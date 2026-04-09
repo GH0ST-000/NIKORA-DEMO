@@ -14,7 +14,9 @@ use Illuminate\Queue\SerializesModels;
 
 final class NewChatMessage implements ShouldBroadcast
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable;
+    use InteractsWithSockets;
+    use SerializesModels;
 
     public function __construct(
         public readonly ChatMessage $chatMessage,
@@ -26,7 +28,7 @@ final class NewChatMessage implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel("conversation.{$this->chatMessage->conversation_id}"),
+            new PrivateChannel('conversation.'.$this->chatMessage->conversation_id),
         ];
     }
 

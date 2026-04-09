@@ -42,26 +42,22 @@ final class UserPolicy
         return $user->hasPermissionTo('create_user', 'web');
     }
 
-    public function update(User $user, User $model): bool
+    public function update(User $user): bool
     {
-        if ($user->hasPermissionTo('update_user', 'web')) {
-            return true;
-        }
-
-        return false;
+        return $user->hasPermissionTo('update_user', 'web');
     }
 
-    public function delete(User $user, User $model): bool
+    public function delete(User $user): bool
     {
         return $user->hasPermissionTo('delete_user', 'web');
     }
 
-    public function restore(User $user, User $model): bool
+    public function restore(User $user): bool
     {
         return $user->hasPermissionTo('restore_user', 'web');
     }
 
-    public function forceDelete(User $user, User $model): bool
+    public function forceDelete(User $user): bool
     {
         return $user->hasPermissionTo('force_delete_user', 'web');
     }

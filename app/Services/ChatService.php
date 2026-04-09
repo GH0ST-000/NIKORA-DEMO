@@ -21,7 +21,7 @@ final class ChatService
     {
         $existing = $this->findDirectConversation($authUser->id, $targetUser->id);
 
-        if ($existing) {
+        if ($existing instanceof Conversation) {
             return $existing->load('participants.user');
         }
 

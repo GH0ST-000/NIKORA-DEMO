@@ -82,9 +82,7 @@ describe('sendMessage', function (): void {
         $conversation->refresh();
         expect($conversation->last_message_at)->not->toBeNull();
 
-        Event::assertDispatched(NewChatMessage::class, function (NewChatMessage $event) use ($message): bool {
-            return $event->chatMessage->id === $message->id;
-        });
+        Event::assertDispatched(NewChatMessage::class, fn (NewChatMessage $event): bool => $event->chatMessage->id === $message->id);
     });
 });
 
@@ -133,10 +131,8 @@ describe('markConversationAsRead', function (): void {
 
         expect($updated)->toBe(3);
 
-        Event::assertDispatched(ChatMessagesRead::class, function (ChatMessagesRead $event) use ($conversation): bool {
-            return $event->conversationId === $conversation->id
-                && $event->updatedCount === 3;
-        });
+        Event::assertDispatched(ChatMessagesRead::class, fn (ChatMessagesRead $event): bool => $event->conversationId === $conversation->id
+            && $event->updatedCount === 3);
     });
 });
 

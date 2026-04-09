@@ -26,7 +26,7 @@ describe('NewChatMessage Event', function (): void {
 
         expect($channels)->toHaveCount(1)
             ->and($channels[0])->toBeInstanceOf(PrivateChannel::class)
-            ->and($channels[0]->name)->toBe("private-conversation.{$conversation->id}");
+            ->and($channels[0]->name)->toBe('private-conversation.'.$conversation->id);
     });
 
     test('uses correct broadcast name', function (): void {

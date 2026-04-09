@@ -149,6 +149,7 @@ test('can get expiring batches with custom days parameter', function (): void {
         ->getJson('/api/dashboard/expiring-batches?days=7');
 
     $response->assertOk();
+
     $data = $response->json('data');
     expect($data)->toBeArray();
     expect(count($data))->toBe(1);
@@ -177,6 +178,7 @@ test('expiring batches only includes active batches', function (): void {
         ->getJson('/api/dashboard/expiring-batches');
 
     $response->assertOk();
+
     $data = $response->json('data');
     expect($data)->toBeArray();
     expect(count($data))->toBe(1);
@@ -193,6 +195,7 @@ test('expiring batches respects pagination', function (): void {
         ->getJson('/api/dashboard/expiring-batches?per_page=10');
 
     $response->assertOk();
+
     $data = $response->json('data');
     expect($data)->toBeArray();
     expect(count($data))->toBe(10);
@@ -263,6 +266,7 @@ test('can get recent additions with custom days parameter', function (): void {
         ->getJson('/api/dashboard/recent-additions?days=3');
 
     $response->assertOk();
+
     expect($response->json('data.manufacturers.count'))->toBe(1);
 });
 
@@ -275,6 +279,7 @@ test('recent additions respects limit parameter', function (): void {
         ->getJson('/api/dashboard/recent-additions?limit=5');
 
     $response->assertOk();
+
     expect($response->json('data.manufacturers.items'))->toHaveCount(5);
 });
 
@@ -443,6 +448,7 @@ test('visualization defaults to overview when type not provided', function (): v
         ->getJson('/api/dashboard/visualization');
 
     $response->assertOk();
+
     expect($response->json('data.type'))->toBe('overview');
 });
 

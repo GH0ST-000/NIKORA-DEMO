@@ -215,7 +215,7 @@ test('can view a ticket with details', function (): void {
     $ticket = Ticket::factory()->create(['user_id' => $this->user->id]);
 
     $response = $this->actingAs($this->user, 'api')
-        ->getJson("/api/tickets/{$ticket->id}");
+        ->getJson('/api/tickets/'.$ticket->id);
 
     $response->assertOk()
         ->assertJson([
@@ -236,7 +236,7 @@ test('customer can view own ticket', function (): void {
     $ticket = Ticket::factory()->create(['user_id' => $customer->id]);
 
     $response = $this->actingAs($customer, 'api')
-        ->getJson("/api/tickets/{$ticket->id}");
+        ->getJson('/api/tickets/'.$ticket->id);
 
     $response->assertOk();
 });
@@ -248,7 +248,7 @@ test('customer cannot view other users ticket', function (): void {
     $otherTicket = Ticket::factory()->create();
 
     $response = $this->actingAs($customer, 'api')
-        ->getJson("/api/tickets/{$otherTicket->id}");
+        ->getJson('/api/tickets/'.$otherTicket->id);
 
     $response->assertForbidden();
 });
@@ -263,7 +263,7 @@ test('can update ticket', function (): void {
     ];
 
     $response = $this->actingAs($this->user, 'api')
-        ->putJson("/api/tickets/{$ticket->id}", $data);
+        ->putJson('/api/tickets/'.$ticket->id, $data);
 
     $response->assertOk()
         ->assertJson([
@@ -291,7 +291,7 @@ test('can assign ticket to support agent', function (): void {
     ];
 
     $response = $this->actingAs($this->user, 'api')
-        ->putJson("/api/tickets/{$ticket->id}", $data);
+        ->putJson('/api/tickets/'.$ticket->id, $data);
 
     $response->assertOk()
         ->assertJson([
@@ -319,7 +319,7 @@ test('customer can only update title and description of own ticket', function ()
     ];
 
     $response = $this->actingAs($customer, 'api')
-        ->putJson("/api/tickets/{$ticket->id}", $data);
+        ->putJson('/api/tickets/'.$ticket->id, $data);
 
     $response->assertOk();
 
@@ -336,7 +336,7 @@ test('can delete ticket', function (): void {
     $ticket = Ticket::factory()->create(['user_id' => $this->user->id]);
 
     $response = $this->actingAs($this->user, 'api')
-        ->deleteJson("/api/tickets/{$ticket->id}");
+        ->deleteJson('/api/tickets/'.$ticket->id);
 
     $response->assertOk()
         ->assertJson([
@@ -350,7 +350,7 @@ test('can close a ticket', function (): void {
     $ticket = Ticket::factory()->open()->create(['user_id' => $this->user->id]);
 
     $response = $this->actingAs($this->user, 'api')
-        ->postJson("/api/tickets/{$ticket->id}/close");
+        ->postJson(sprintf('/api/tickets/%d/close', $ticket->id));
 
     $response->assertOk()
         ->assertJson([
@@ -373,7 +373,7 @@ test('cannot close an already closed ticket', function (): void {
     $ticket = Ticket::factory()->closed()->create(['user_id' => $this->user->id]);
 
     $response = $this->actingAs($this->user, 'api')
-        ->postJson("/api/tickets/{$ticket->id}/close");
+        ->postJson(sprintf('/api/tickets/%d/close', $ticket->id));
 
     $response->assertUnprocessable();
 });
@@ -382,7 +382,7 @@ test('can reopen a closed ticket', function (): void {
     $ticket = Ticket::factory()->closed()->create(['user_id' => $this->user->id]);
 
     $response = $this->actingAs($this->user, 'api')
-        ->postJson("/api/tickets/{$ticket->id}/reopen");
+        ->postJson(sprintf('/api/tickets/%d/reopen', $ticket->id));
 
     $response->assertOk()
         ->assertJson([
@@ -400,7 +400,7 @@ test('cannot reopen a ticket that is not closed', function (): void {
     $ticket = Ticket::factory()->open()->create(['user_id' => $this->user->id]);
 
     $response = $this->actingAs($this->user, 'api')
-        ->postJson("/api/tickets/{$ticket->id}/reopen");
+        ->postJson(sprintf('/api/tickets/%d/reopen', $ticket->id));
 
     $response->assertUnprocessable();
 });
@@ -458,7 +458,7 @@ test('customer can close own ticket', function (): void {
     $ticket = Ticket::factory()->open()->create(['user_id' => $customer->id]);
 
     $response = $this->actingAs($customer, 'api')
-        ->postJson("/api/tickets/{$ticket->id}/close");
+        ->postJson(sprintf('/api/tickets/%d/close', $ticket->id));
 
     $response->assertOk()
         ->assertJson(['data' => ['status' => 'closed']]);
@@ -471,7 +471,7 @@ test('customer can reopen own ticket', function (): void {
     $ticket = Ticket::factory()->closed()->create(['user_id' => $customer->id]);
 
     $response = $this->actingAs($customer, 'api')
-        ->postJson("/api/tickets/{$ticket->id}/reopen");
+        ->postJson(sprintf('/api/tickets/%d/reopen', $ticket->id));
 
     $response->assertOk()
         ->assertJson(['data' => ['status' => 'open']]);
@@ -481,7 +481,7 @@ test('setting status to closed via update sets closed_at', function (): void {
     $ticket = Ticket::factory()->open()->create(['user_id' => $this->user->id]);
 
     $response = $this->actingAs($this->user, 'api')
-        ->putJson("/api/tickets/{$ticket->id}", ['status' => 'closed']);
+        ->putJson('/api/tickets/'.$ticket->id, ['status' => 'closed']);
 
     $response->assertOk()
         ->assertJson(['data' => ['status' => 'closed']]);
@@ -495,7 +495,7 @@ test('ticket show includes attachments', function (): void {
     TicketAttachment::factory()->count(2)->create(['ticket_id' => $ticket->id]);
 
     $response = $this->actingAs($this->user, 'api')
-        ->getJson("/api/tickets/{$ticket->id}");
+        ->getJson('/api/tickets/'.$ticket->id);
 
     $response->assertOk()
         ->assertJsonStructure([

@@ -59,7 +59,7 @@ test('can filter action logs by user_id', function (): void {
     ActionLog::factory()->count(5)->create(['user_id' => $otherUser->id]);
 
     $response = $this->actingAs($this->user, 'api')
-        ->getJson("/api/action-logs?user_id={$this->user->id}");
+        ->getJson('/api/action-logs?user_id='.$this->user->id);
 
     $response->assertOk()
         ->assertJsonCount(3, 'data');
@@ -132,7 +132,7 @@ test('can view a single action log', function (): void {
     ]);
 
     $response = $this->actingAs($this->user, 'api')
-        ->getJson("/api/action-logs/{$log->id}");
+        ->getJson('/api/action-logs/'.$log->id);
 
     $response->assertOk()
         ->assertJson([
@@ -151,7 +151,7 @@ test('action log show includes user relationship', function (): void {
     $log = ActionLog::factory()->create(['user_id' => $this->user->id]);
 
     $response = $this->actingAs($this->user, 'api')
-        ->getJson("/api/action-logs/{$log->id}");
+        ->getJson('/api/action-logs/'.$log->id);
 
     $response->assertOk()
         ->assertJsonStructure([
@@ -181,7 +181,7 @@ test('can search action logs', function (): void {
     $response->assertOk();
 
     $data = $response->json('data');
-    expect(collect($data)->pluck('description')->filter(fn ($d): bool => str_contains($d, 'Product'))->count())->toBeGreaterThanOrEqual(1);
+    expect(collect($data)->pluck('description')->filter(fn ($d): bool => str_contains((string) $d, 'Product'))->count())->toBeGreaterThanOrEqual(1);
 });
 
 test('can search with action_type filter', function (): void {
@@ -214,7 +214,7 @@ test('can search with user_id filter', function (): void {
     ]);
 
     $response = $this->actingAs($this->user, 'api')
-        ->getJson("/api/action-logs/search?q=Product&user_id={$this->user->id}");
+        ->getJson('/api/action-logs/search?q=Product&user_id='.$this->user->id);
 
     $response->assertOk();
 });
@@ -254,7 +254,7 @@ test('cannot view single action log without permission', function (): void {
     $log = ActionLog::factory()->create();
 
     $response = $this->actingAs($userWithoutPermission, 'api')
-        ->getJson("/api/action-logs/{$log->id}");
+        ->getJson('/api/action-logs/'.$log->id);
 
     $response->assertForbidden();
 });
@@ -300,7 +300,7 @@ test('action log with metadata displays correctly', function (): void {
     ])->create();
 
     $response = $this->actingAs($this->user, 'api')
-        ->getJson("/api/action-logs/{$log->id}");
+        ->getJson('/api/action-logs/'.$log->id);
 
     $response->assertOk()
         ->assertJson([

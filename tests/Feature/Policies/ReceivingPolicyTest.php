@@ -31,6 +31,7 @@ test('user without view_any_receiving permission cannot view any', function (): 
 test('user with view_receiving permission can view', function (): void {
     $user = User::factory()->create();
     $user->givePermissionTo('view_receiving');
+
     $receiving = Receiving::factory()->create();
 
     expect($this->policy->view($user, $receiving))->toBeTrue();
@@ -59,6 +60,7 @@ test('user without create_receiving permission cannot create', function (): void
 test('user with update_receiving permission can update', function (): void {
     $user = User::factory()->create();
     $user->givePermissionTo('update_receiving');
+
     $receiving = Receiving::factory()->create();
 
     expect($this->policy->update($user, $receiving))->toBeTrue();
@@ -74,6 +76,7 @@ test('user without update_receiving permission cannot update', function (): void
 test('user with delete_receiving permission can delete', function (): void {
     $user = User::factory()->create();
     $user->givePermissionTo('delete_receiving');
+
     $receiving = Receiving::factory()->create();
 
     expect($this->policy->delete($user, $receiving))->toBeTrue();
@@ -89,6 +92,7 @@ test('user without delete_receiving permission cannot delete', function (): void
 test('user with restore_receiving permission can restore', function (): void {
     $user = User::factory()->create();
     $user->givePermissionTo('restore_receiving');
+
     $receiving = Receiving::factory()->create();
 
     expect($this->policy->restore($user, $receiving))->toBeTrue();
@@ -104,6 +108,7 @@ test('user without restore_receiving permission cannot restore', function (): vo
 test('user with force_delete_receiving permission can force delete', function (): void {
     $user = User::factory()->create();
     $user->givePermissionTo('force_delete_receiving');
+
     $receiving = Receiving::factory()->create();
 
     expect($this->policy->forceDelete($user, $receiving))->toBeTrue();

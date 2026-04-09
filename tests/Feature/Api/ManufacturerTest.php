@@ -34,7 +34,7 @@ describe('API Manufacturers', function (): void {
 
         $token = $loginResponse->json('access_token');
 
-        $response = $this->withHeader('Authorization', "Bearer {$token}")
+        $response = $this->withHeader('Authorization', 'Bearer '.$token)
             ->getJson('/api/manufacturers');
 
         $response->assertStatus(200)
@@ -86,7 +86,7 @@ describe('API Manufacturers', function (): void {
             'is_active' => true,
         ];
 
-        $response = $this->withHeader('Authorization', "Bearer {$token}")
+        $response = $this->withHeader('Authorization', 'Bearer '.$token)
             ->postJson('/api/manufacturers', $manufacturerData);
 
         $response->assertStatus(201)
@@ -114,8 +114,8 @@ describe('API Manufacturers', function (): void {
 
         $token = $loginResponse->json('access_token');
 
-        $response = $this->withHeader('Authorization', "Bearer {$token}")
-            ->getJson("/api/manufacturers/{$manufacturer->id}");
+        $response = $this->withHeader('Authorization', 'Bearer '.$token)
+            ->getJson('/api/manufacturers/'.$manufacturer->id);
 
         $response->assertStatus(200)
             ->assertJson([
@@ -138,8 +138,8 @@ describe('API Manufacturers', function (): void {
 
         $token = $loginResponse->json('access_token');
 
-        $response = $this->withHeader('Authorization', "Bearer {$token}")
-            ->putJson("/api/manufacturers/{$manufacturer->id}", [
+        $response = $this->withHeader('Authorization', 'Bearer '.$token)
+            ->putJson('/api/manufacturers/'.$manufacturer->id, [
                 'full_name' => 'Updated Name',
             ]);
 
@@ -166,8 +166,8 @@ describe('API Manufacturers', function (): void {
 
         $token = $loginResponse->json('access_token');
 
-        $response = $this->withHeader('Authorization', "Bearer {$token}")
-            ->deleteJson("/api/manufacturers/{$manufacturer->id}");
+        $response = $this->withHeader('Authorization', 'Bearer '.$token)
+            ->deleteJson('/api/manufacturers/'.$manufacturer->id);
 
         $response->assertStatus(200)
             ->assertJson([
@@ -187,7 +187,7 @@ describe('API Manufacturers', function (): void {
 
         $token = $loginResponse->json('access_token');
 
-        $response = $this->withHeader('Authorization', "Bearer {$token}")
+        $response = $this->withHeader('Authorization', 'Bearer '.$token)
             ->postJson('/api/manufacturers', [
                 'full_name' => 'Test Manufacturer',
                 'legal_form' => 'LLC',
@@ -216,7 +216,7 @@ describe('API Manufacturers', function (): void {
 
         $token = $loginResponse->json('access_token');
 
-        $response = $this->withHeader('Authorization', "Bearer {$token}")
+        $response = $this->withHeader('Authorization', 'Bearer '.$token)
             ->postJson('/api/manufacturers', []);
 
         $response->assertStatus(422)
@@ -240,7 +240,7 @@ describe('API Manufacturers', function (): void {
 
         $token = $loginResponse->json('access_token');
 
-        $response = $this->withHeader('Authorization', "Bearer {$token}")
+        $response = $this->withHeader('Authorization', 'Bearer '.$token)
             ->postJson('/api/manufacturers', [
                 'full_name' => 'Test',
                 'legal_form' => 'LLC',
@@ -268,7 +268,7 @@ describe('API Manufacturers', function (): void {
 
         $token = $loginResponse->json('access_token');
 
-        $response = $this->withHeader('Authorization', "Bearer {$token}")
+        $response = $this->withHeader('Authorization', 'Bearer '.$token)
             ->postJson('/api/manufacturers', [
                 'full_name' => 'Test Manufacturer',
                 'legal_form' => 'LLC',
@@ -292,7 +292,7 @@ describe('API Manufacturers', function (): void {
 
         $token = $loginResponse->json('access_token');
 
-        $response = $this->withHeader('Authorization', "Bearer {$token}")
+        $response = $this->withHeader('Authorization', 'Bearer '.$token)
             ->postJson('/api/manufacturers', [
                 'full_name' => '  Test Manufacturer  ',
                 'short_name' => '  TestMfg  ',
@@ -331,8 +331,8 @@ describe('API Manufacturers', function (): void {
 
         $token = $loginResponse->json('access_token');
 
-        $response = $this->withHeader('Authorization', "Bearer {$token}")
-            ->putJson("/api/manufacturers/{$manufacturer2->id}", [
+        $response = $this->withHeader('Authorization', 'Bearer '.$token)
+            ->putJson('/api/manufacturers/'.$manufacturer2->id, [
                 'identification_number' => 'EXISTING123',
             ]);
 
@@ -362,8 +362,8 @@ describe('API Manufacturers', function (): void {
 
         $token = $loginResponse->json('access_token');
 
-        $response = $this->withHeader('Authorization', "Bearer {$token}")
-            ->putJson("/api/manufacturers/{$manufacturer->id}", [
+        $response = $this->withHeader('Authorization', 'Bearer '.$token)
+            ->putJson('/api/manufacturers/'.$manufacturer->id, [
                 'full_name' => 'Updated Full Name',
                 'short_name' => 'Updated',
                 'legal_form' => 'JSC',
@@ -405,7 +405,7 @@ describe('API Manufacturers', function (): void {
 
         $token = $loginResponse->json('access_token');
 
-        $response = $this->withHeader('Authorization', "Bearer {$token}")
+        $response = $this->withHeader('Authorization', 'Bearer '.$token)
             ->getJson('/api/manufacturers');
 
         $response->assertStatus(200)
@@ -429,7 +429,7 @@ describe('API Manufacturers', function (): void {
 
         $token = $loginResponse->json('access_token');
 
-        $response = $this->withHeader('Authorization', "Bearer {$token}")
+        $response = $this->withHeader('Authorization', 'Bearer '.$token)
             ->getJson('/api/manufacturers?per_page=10');
 
         $response->assertStatus(200);
@@ -447,7 +447,7 @@ describe('API Manufacturers', function (): void {
 
         $token = $loginResponse->json('access_token');
 
-        $response = $this->withHeader('Authorization', "Bearer {$token}")
+        $response = $this->withHeader('Authorization', 'Bearer '.$token)
             ->getJson('/api/manufacturers?per_page=200');
 
         $response->assertStatus(200);
@@ -465,20 +465,22 @@ describe('API Manufacturers', function (): void {
 
         $token = $loginResponse->json('access_token');
 
-        $firstPageResponse = $this->withHeader('Authorization', "Bearer {$token}")
+        $firstPageResponse = $this->withHeader('Authorization', 'Bearer '.$token)
             ->getJson('/api/manufacturers?per_page=10');
 
         $firstPageResponse->assertStatus(200);
+
         $firstPageData = $firstPageResponse->json('data');
         expect(count($firstPageData))->toBe(10);
 
         $nextCursor = $firstPageResponse->json('meta.next_cursor');
         expect($nextCursor)->not->toBeNull();
 
-        $secondPageResponse = $this->withHeader('Authorization', "Bearer {$token}")
-            ->getJson("/api/manufacturers?per_page=10&cursor={$nextCursor}");
+        $secondPageResponse = $this->withHeader('Authorization', 'Bearer '.$token)
+            ->getJson('/api/manufacturers?per_page=10&cursor='.$nextCursor);
 
         $secondPageResponse->assertStatus(200);
+
         $secondPageData = $secondPageResponse->json('data');
         expect(count($secondPageData))->toBe(10);
 

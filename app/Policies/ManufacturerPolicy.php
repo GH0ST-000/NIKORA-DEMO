@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Policies;
 
-use App\Models\Manufacturer;
 use App\Models\User;
 
 final class ManufacturerPolicy
@@ -14,7 +13,7 @@ final class ManufacturerPolicy
         return $user->hasPermissionTo('view_any_manufacturer', 'web');
     }
 
-    public function view(User $user, Manufacturer $manufacturer): bool
+    public function view(User $user): bool
     {
         return $user->hasPermissionTo('view_manufacturer', 'web');
     }
@@ -24,22 +23,22 @@ final class ManufacturerPolicy
         return $user->hasPermissionTo('create_manufacturer', 'web');
     }
 
-    public function update(User $user, Manufacturer $manufacturer): bool
+    public function update(User $user): bool
     {
         return $user->hasPermissionTo('update_manufacturer', 'web');
     }
 
-    public function delete(User $user, Manufacturer $manufacturer): bool
+    public function delete(User $user): bool
     {
         return $user->hasPermissionTo('delete_manufacturer', 'web');
     }
 
-    public function restore(User $user, Manufacturer $manufacturer): bool
+    public function restore(User $user): bool
     {
         return $user->hasPermissionTo('restore_manufacturer', 'web');
     }
 
-    public function forceDelete(User $user, Manufacturer $manufacturer): bool
+    public function forceDelete(User $user): bool
     {
         return $user->hasPermissionTo('force_delete_manufacturer', 'web');
     }

@@ -32,7 +32,7 @@ describe('API Role Management', function (): void {
 
         $token = $loginResponse->json('access_token');
 
-        $response = $this->withHeader('Authorization', "Bearer {$token}")
+        $response = $this->withHeader('Authorization', 'Bearer '.$token)
             ->getJson('/api/roles');
 
         $response->assertStatus(200)
@@ -67,8 +67,8 @@ describe('API Role Management', function (): void {
         $token = $loginResponse->json('access_token');
         $role = Role::where('name', 'Quality Manager')->first();
 
-        $response = $this->withHeader('Authorization', "Bearer {$token}")
-            ->getJson("/api/roles/{$role->id}");
+        $response = $this->withHeader('Authorization', 'Bearer '.$token)
+            ->getJson('/api/roles/'.$role->id);
 
         $response->assertStatus(200)
             ->assertJsonStructure([
@@ -102,7 +102,7 @@ describe('API Role Management', function (): void {
 
         $token = $loginResponse->json('access_token');
 
-        $response = $this->withHeader('Authorization', "Bearer {$token}")
+        $response = $this->withHeader('Authorization', 'Bearer '.$token)
             ->getJson('/api/roles');
 
         $response->assertStatus(403);
@@ -127,8 +127,8 @@ describe('API Role Management', function (): void {
 
         $token = $loginResponse->json('access_token');
 
-        $response = $this->withHeader('Authorization', "Bearer {$token}")
-            ->postJson("/api/users/{$targetUser->id}/roles", [
+        $response = $this->withHeader('Authorization', 'Bearer '.$token)
+            ->postJson(sprintf('/api/users/%d/roles', $targetUser->id), [
                 'role' => 'Auditor',
             ]);
 
@@ -162,8 +162,8 @@ describe('API Role Management', function (): void {
 
         $token = $loginResponse->json('access_token');
 
-        $response = $this->withHeader('Authorization', "Bearer {$token}")
-            ->deleteJson("/api/users/{$targetUser->id}/roles/Auditor");
+        $response = $this->withHeader('Authorization', 'Bearer '.$token)
+            ->deleteJson(sprintf('/api/users/%d/roles/Auditor', $targetUser->id));
 
         $response->assertStatus(200)
             ->assertJson([
@@ -187,8 +187,8 @@ describe('API Role Management', function (): void {
 
         $token = $loginResponse->json('access_token');
 
-        $response = $this->withHeader('Authorization', "Bearer {$token}")
-            ->postJson("/api/users/{$targetUser->id}/roles", [
+        $response = $this->withHeader('Authorization', 'Bearer '.$token)
+            ->postJson(sprintf('/api/users/%d/roles', $targetUser->id), [
                 'role' => 'Auditor',
             ]);
 
@@ -209,8 +209,8 @@ describe('API Role Management', function (): void {
 
         $token = $loginResponse->json('access_token');
 
-        $response = $this->withHeader('Authorization', "Bearer {$token}")
-            ->deleteJson("/api/users/{$targetUser->id}/roles/Auditor");
+        $response = $this->withHeader('Authorization', 'Bearer '.$token)
+            ->deleteJson(sprintf('/api/users/%d/roles/Auditor', $targetUser->id));
 
         $response->assertStatus(403);
     });
@@ -228,8 +228,8 @@ describe('API Role Management', function (): void {
 
         $token = $loginResponse->json('access_token');
 
-        $response = $this->withHeader('Authorization', "Bearer {$token}")
-            ->postJson("/api/users/{$targetUser->id}/roles", [
+        $response = $this->withHeader('Authorization', 'Bearer '.$token)
+            ->postJson(sprintf('/api/users/%d/roles', $targetUser->id), [
                 'role' => 'NonExistentRole',
             ]);
 
@@ -250,8 +250,8 @@ describe('API Role Management', function (): void {
 
         $token = $loginResponse->json('access_token');
 
-        $response = $this->withHeader('Authorization', "Bearer {$token}")
-            ->postJson("/api/users/{$targetUser->id}/roles", []);
+        $response = $this->withHeader('Authorization', 'Bearer '.$token)
+            ->postJson(sprintf('/api/users/%d/roles', $targetUser->id), []);
 
         $response->assertStatus(422)
             ->assertJsonValidationErrors(['role']);
@@ -270,11 +270,11 @@ describe('API Role Management', function (): void {
 
         $token = $loginResponse->json('access_token');
 
-        $this->withHeader('Authorization', "Bearer {$token}")
-            ->postJson("/api/users/{$targetUser->id}/roles", ['role' => 'Auditor']);
+        $this->withHeader('Authorization', 'Bearer '.$token)
+            ->postJson(sprintf('/api/users/%d/roles', $targetUser->id), ['role' => 'Auditor']);
 
-        $this->withHeader('Authorization', "Bearer {$token}")
-            ->postJson("/api/users/{$targetUser->id}/roles", ['role' => 'Warehouse Operator']);
+        $this->withHeader('Authorization', 'Bearer '.$token)
+            ->postJson(sprintf('/api/users/%d/roles', $targetUser->id), ['role' => 'Warehouse Operator']);
 
         $targetUser->refresh();
 
@@ -291,8 +291,8 @@ describe('API Role Management', function (): void {
         $token = $loginResponse->json('access_token');
         $role = Role::where('name', 'Quality Manager')->first();
 
-        $response = $this->withHeader('Authorization', "Bearer {$token}")
-            ->getJson("/api/roles/{$role->id}");
+        $response = $this->withHeader('Authorization', 'Bearer '.$token)
+            ->getJson('/api/roles/'.$role->id);
 
         $response->assertStatus(200);
 
@@ -316,8 +316,8 @@ describe('API Role Management', function (): void {
 
         $token = $loginResponse->json('access_token');
 
-        $response = $this->withHeader('Authorization', "Bearer {$token}")
-            ->deleteJson("/api/users/{$targetUser->id}/roles/NonExistentRole");
+        $response = $this->withHeader('Authorization', 'Bearer '.$token)
+            ->deleteJson(sprintf('/api/users/%d/roles/NonExistentRole', $targetUser->id));
 
         $response->assertStatus(200);
     });

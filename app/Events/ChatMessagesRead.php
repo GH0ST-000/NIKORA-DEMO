@@ -12,7 +12,9 @@ use Illuminate\Queue\SerializesModels;
 
 final class ChatMessagesRead implements ShouldBroadcast
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable;
+    use InteractsWithSockets;
+    use SerializesModels;
 
     public function __construct(
         public readonly int $conversationId,
@@ -27,7 +29,7 @@ final class ChatMessagesRead implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel("conversation.{$this->conversationId}"),
+            new PrivateChannel('conversation.'.$this->conversationId),
         ];
     }
 

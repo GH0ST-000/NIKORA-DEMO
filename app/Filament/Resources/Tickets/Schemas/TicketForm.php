@@ -50,7 +50,7 @@ final class TicketForm
                     ->relationship('user', 'name')
                     ->searchable()
                     ->required()
-                    ->disabled(fn (?Ticket $record): bool => $record !== null),
+                    ->disabled(fn (?Ticket $record): bool => $record instanceof Ticket),
             ]);
     }
 }

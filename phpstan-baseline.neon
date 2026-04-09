@@ -1123,18 +1123,6 @@ parameters:
 			path: app/Services/ActionLogService.php
 
 		-
-			rawMessage: 'Parameter $entityId of method App\Services\ActionLogService::log() expects int|null, mixed given.'
-			identifier: argument.type
-			count: 4
-			path: app/Services/ActionLogService.php
-
-		-
-			rawMessage: 'Part $model->getKey() (mixed) of encapsed string cannot be cast to string.'
-			identifier: encapsedStringPart.nonString
-			count: 4
-			path: app/Services/ActionLogService.php
-
-		-
 			rawMessage: Anonymous function should return App\Models\ChatMessage but returns mixed.
 			identifier: return.type
 			count: 1

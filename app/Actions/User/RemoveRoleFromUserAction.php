@@ -26,7 +26,7 @@ final readonly class RemoveRoleFromUserAction
                 entityType: 'user',
                 entityId: $user->id,
                 module: 'users',
-                description: "Role '{$roleName}' removed from User #{$user->id}",
+                description: sprintf("Role '%s' removed from User #%d", $roleName, $user->id),
                 metadata: ['role' => $roleName],
             );
         } catch (RoleDoesNotExist) {

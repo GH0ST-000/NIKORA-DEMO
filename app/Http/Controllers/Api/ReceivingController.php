@@ -27,7 +27,6 @@ final class ReceivingController extends Controller
     {
         $this->authorize('viewAny', Receiving::class);
 
-        /** @var int $perPage */
         $perPage = (int) request()->query('per_page', '25');
 
         $receivings = Receiving::query()

@@ -26,7 +26,7 @@ final class WarehouseLocationResource extends JsonResource
             'code' => $this->code,
             'type' => $this->type,
             'parent_id' => $this->parent_id,
-            'parent' => $this->whenLoaded('parent', fn () => $this->parent ? [
+            'parent' => $this->whenLoaded('parent', fn (): ?array => $this->parent ? [
                 'id' => $this->parent->id,
                 'name' => $this->parent->name,
                 'code' => $this->parent->code,
@@ -35,7 +35,7 @@ final class WarehouseLocationResource extends JsonResource
             'temp_min' => $this->temp_min,
             'temp_max' => $this->temp_max,
             'responsible_user_id' => $this->responsible_user_id,
-            'responsible_user' => $this->whenLoaded('responsibleUser', fn () => $this->responsibleUser ? [
+            'responsible_user' => $this->whenLoaded('responsibleUser', fn (): ?array => $this->responsibleUser ? [
                 'id' => $this->responsibleUser->id,
                 'name' => $this->responsibleUser->name,
                 'email' => $this->responsibleUser->email,

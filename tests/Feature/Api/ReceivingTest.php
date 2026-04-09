@@ -91,7 +91,7 @@ test('can view receiving', function (): void {
     $receiving = Receiving::factory()->create();
 
     $response = $this->actingAs($this->user, 'api')
-        ->getJson("/api/receivings/{$receiving->id}");
+        ->getJson('/api/receivings/'.$receiving->id);
 
     $response->assertOk()
         ->assertJsonFragment([
@@ -104,7 +104,7 @@ test('can update receiving', function (): void {
     $receiving = Receiving::factory()->create(['status' => 'pending']);
 
     $response = $this->actingAs($this->user, 'api')
-        ->putJson("/api/receivings/{$receiving->id}", [
+        ->putJson('/api/receivings/'.$receiving->id, [
             'status' => 'accepted',
             'documents_verified' => true,
         ]);
@@ -125,7 +125,7 @@ test('can delete receiving', function (): void {
     $receiving = Receiving::factory()->create();
 
     $response = $this->actingAs($this->user, 'api')
-        ->deleteJson("/api/receivings/{$receiving->id}");
+        ->deleteJson('/api/receivings/'.$receiving->id);
 
     $response->assertOk()
         ->assertJson(['message' => 'Receiving deleted successfully']);
@@ -298,7 +298,7 @@ test('requires update_receiving permission to update', function (): void {
     $receiving = Receiving::factory()->create();
 
     $response = $this->actingAs($this->user, 'api')
-        ->putJson("/api/receivings/{$receiving->id}", [
+        ->putJson('/api/receivings/'.$receiving->id, [
             'status' => 'accepted',
         ]);
 
@@ -310,7 +310,7 @@ test('requires delete_receiving permission to delete', function (): void {
     $receiving = Receiving::factory()->create();
 
     $response = $this->actingAs($this->user, 'api')
-        ->deleteJson("/api/receivings/{$receiving->id}");
+        ->deleteJson('/api/receivings/'.$receiving->id);
 
     $response->assertForbidden();
 });
@@ -367,7 +367,7 @@ test('can update status to rejected with reason', function (): void {
     $receiving = Receiving::factory()->pending()->create();
 
     $response = $this->actingAs($this->user, 'api')
-        ->putJson("/api/receivings/{$receiving->id}", [
+        ->putJson('/api/receivings/'.$receiving->id, [
             'status' => 'rejected',
             'rejection_reason' => 'Temperature not compliant',
         ]);
@@ -383,7 +383,7 @@ test('can update status to quarantined', function (): void {
     $receiving = Receiving::factory()->pending()->create();
 
     $response = $this->actingAs($this->user, 'api')
-        ->putJson("/api/receivings/{$receiving->id}", [
+        ->putJson('/api/receivings/'.$receiving->id, [
             'status' => 'quarantined',
         ]);
 
@@ -397,7 +397,7 @@ test('can add photos to receiving', function (): void {
     $receiving = Receiving::factory()->create(['photos' => null]);
 
     $response = $this->actingAs($this->user, 'api')
-        ->putJson("/api/receivings/{$receiving->id}", [
+        ->putJson('/api/receivings/'.$receiving->id, [
             'photos' => ['photo1.jpg', 'photo2.jpg', 'photo3.jpg'],
         ]);
 

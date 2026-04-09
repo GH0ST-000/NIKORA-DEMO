@@ -219,7 +219,7 @@ describe('GET /api/chat/conversations/{conversation}', function (): void {
         $conversation = createDirectConversation($this->user, $this->otherUser);
 
         $response = $this->actingAs($this->user, 'api')
-            ->getJson("/api/chat/conversations/{$conversation->id}");
+            ->getJson('/api/chat/conversations/'.$conversation->id);
 
         $response->assertOk()
             ->assertJsonPath('data.id', $conversation->id)
@@ -240,7 +240,7 @@ describe('GET /api/chat/conversations/{conversation}', function (): void {
         $conversation = createDirectConversation($this->otherUser, $thirdUser);
 
         $response = $this->actingAs($this->user, 'api')
-            ->getJson("/api/chat/conversations/{$conversation->id}");
+            ->getJson('/api/chat/conversations/'.$conversation->id);
 
         $response->assertForbidden();
     });
@@ -256,7 +256,7 @@ describe('GET /api/chat/conversations/{conversation}/messages', function (): voi
         ]);
 
         $response = $this->actingAs($this->user, 'api')
-            ->getJson("/api/chat/conversations/{$conversation->id}/messages");
+            ->getJson(sprintf('/api/chat/conversations/%d/messages', $conversation->id));
 
         $response->assertOk()
             ->assertJsonCount(5, 'data')
@@ -291,7 +291,7 @@ describe('GET /api/chat/conversations/{conversation}/messages', function (): voi
         ]);
 
         $response = $this->actingAs($this->user, 'api')
-            ->getJson("/api/chat/conversations/{$conversation->id}/messages");
+            ->getJson(sprintf('/api/chat/conversations/%d/messages', $conversation->id));
 
         $response->assertOk();
 
@@ -309,7 +309,7 @@ describe('GET /api/chat/conversations/{conversation}/messages', function (): voi
         ]);
 
         $response = $this->actingAs($this->user, 'api')
-            ->getJson("/api/chat/conversations/{$conversation->id}/messages?per_page=3");
+            ->getJson(sprintf('/api/chat/conversations/%d/messages?per_page=3', $conversation->id));
 
         $response->assertOk()
             ->assertJsonCount(3, 'data');
@@ -320,7 +320,7 @@ describe('GET /api/chat/conversations/{conversation}/messages', function (): voi
         $conversation = createDirectConversation($this->otherUser, $thirdUser);
 
         $response = $this->actingAs($this->user, 'api')
-            ->getJson("/api/chat/conversations/{$conversation->id}/messages");
+            ->getJson(sprintf('/api/chat/conversations/%d/messages', $conversation->id));
 
         $response->assertForbidden();
     });
@@ -340,7 +340,7 @@ describe('GET /api/chat/conversations/{conversation}/messages', function (): voi
         ]);
 
         $response = $this->actingAs($this->user, 'api')
-            ->getJson("/api/chat/conversations/{$conversation->id}/messages");
+            ->getJson(sprintf('/api/chat/conversations/%d/messages', $conversation->id));
 
         $response->assertOk()
             ->assertJsonCount(1, 'data');
@@ -352,7 +352,7 @@ describe('POST /api/chat/conversations/{conversation}/messages', function (): vo
         $conversation = createDirectConversation($this->user, $this->otherUser);
 
         $response = $this->actingAs($this->user, 'api')
-            ->postJson("/api/chat/conversations/{$conversation->id}/messages", [
+            ->postJson(sprintf('/api/chat/conversations/%d/messages', $conversation->id), [
                 'body' => 'Hello there!',
             ]);
 
@@ -375,7 +375,7 @@ describe('POST /api/chat/conversations/{conversation}/messages', function (): vo
         expect($conversation->last_message_at)->toBeNull();
 
         $this->actingAs($this->user, 'api')
-            ->postJson("/api/chat/conversations/{$conversation->id}/messages", [
+            ->postJson(sprintf('/api/chat/conversations/%d/messages', $conversation->id), [
                 'body' => 'Hello',
             ]);
 
@@ -387,7 +387,7 @@ describe('POST /api/chat/conversations/{conversation}/messages', function (): vo
         $conversation = createDirectConversation($this->user, $this->otherUser);
 
         $response = $this->actingAs($this->user, 'api')
-            ->postJson("/api/chat/conversations/{$conversation->id}/messages", []);
+            ->postJson(sprintf('/api/chat/conversations/%d/messages', $conversation->id), []);
 
         $response->assertStatus(422)
             ->assertJsonValidationErrors(['body']);
@@ -397,7 +397,7 @@ describe('POST /api/chat/conversations/{conversation}/messages', function (): vo
         $conversation = createDirectConversation($this->user, $this->otherUser);
 
         $response = $this->actingAs($this->user, 'api')
-            ->postJson("/api/chat/conversations/{$conversation->id}/messages", [
+            ->postJson(sprintf('/api/chat/conversations/%d/messages', $conversation->id), [
                 'body' => str_repeat('a', 5001),
             ]);
 
@@ -409,7 +409,7 @@ describe('POST /api/chat/conversations/{conversation}/messages', function (): vo
         $conversation = createDirectConversation($this->user, $this->otherUser);
 
         $response = $this->actingAs($this->user, 'api')
-            ->postJson("/api/chat/conversations/{$conversation->id}/messages", [
+            ->postJson(sprintf('/api/chat/conversations/%d/messages', $conversation->id), [
                 'body' => '  Hello  ',
             ]);
 
@@ -422,7 +422,7 @@ describe('POST /api/chat/conversations/{conversation}/messages', function (): vo
         $conversation = createDirectConversation($this->otherUser, $thirdUser);
 
         $response = $this->actingAs($this->user, 'api')
-            ->postJson("/api/chat/conversations/{$conversation->id}/messages", [
+            ->postJson(sprintf('/api/chat/conversations/%d/messages', $conversation->id), [
                 'body' => 'Hello',
             ]);
 
@@ -447,7 +447,7 @@ describe('POST /api/chat/conversations/{conversation}/read', function (): void {
         ]);
 
         $response = $this->actingAs($this->user, 'api')
-            ->postJson("/api/chat/conversations/{$conversation->id}/read");
+            ->postJson(sprintf('/api/chat/conversations/%d/read', $conversation->id));
 
         $response->assertOk()
             ->assertJsonPath('conversation_id', $conversation->id)
@@ -476,7 +476,7 @@ describe('POST /api/chat/conversations/{conversation}/read', function (): void {
         ]);
 
         $response = $this->actingAs($this->user, 'api')
-            ->postJson("/api/chat/conversations/{$conversation->id}/read");
+            ->postJson(sprintf('/api/chat/conversations/%d/read', $conversation->id));
 
         $response->assertOk()
             ->assertJsonPath('updated_count', 0);
@@ -487,7 +487,7 @@ describe('POST /api/chat/conversations/{conversation}/read', function (): void {
         $conversation = createDirectConversation($this->otherUser, $thirdUser);
 
         $response = $this->actingAs($this->user, 'api')
-            ->postJson("/api/chat/conversations/{$conversation->id}/read");
+            ->postJson(sprintf('/api/chat/conversations/%d/read', $conversation->id));
 
         $response->assertForbidden();
     });
@@ -572,7 +572,7 @@ describe('DELETE /api/chat/messages/{chatMessage}', function (): void {
         ]);
 
         $response = $this->actingAs($this->user, 'api')
-            ->deleteJson("/api/chat/messages/{$message->id}");
+            ->deleteJson('/api/chat/messages/'.$message->id);
 
         $response->assertOk()
             ->assertJsonPath('message', 'Message deleted successfully');
@@ -589,7 +589,7 @@ describe('DELETE /api/chat/messages/{chatMessage}', function (): void {
         ]);
 
         $response = $this->actingAs($this->user, 'api')
-            ->deleteJson("/api/chat/messages/{$message->id}");
+            ->deleteJson('/api/chat/messages/'.$message->id);
 
         $response->assertForbidden();
     });
@@ -597,7 +597,7 @@ describe('DELETE /api/chat/messages/{chatMessage}', function (): void {
     test('requires authentication', function (): void {
         $message = ChatMessage::factory()->create();
 
-        $response = $this->deleteJson("/api/chat/messages/{$message->id}");
+        $response = $this->deleteJson('/api/chat/messages/'.$message->id);
 
         $response->assertUnauthorized();
     });
@@ -610,7 +610,7 @@ describe('Broadcasting Events', function (): void {
         $conversation = createDirectConversation($this->user, $this->otherUser);
 
         $this->actingAs($this->user, 'api')
-            ->postJson("/api/chat/conversations/{$conversation->id}/read");
+            ->postJson(sprintf('/api/chat/conversations/%d/read', $conversation->id));
 
         Event::assertNotDispatched(ChatMessagesRead::class);
     });

@@ -93,7 +93,7 @@ describe('API Authentication', function (): void {
 
         $token = $loginResponse->json('access_token');
 
-        $response = $this->withHeader('Authorization', "Bearer {$token}")
+        $response = $this->withHeader('Authorization', 'Bearer '.$token)
             ->postJson('/api/auth/refresh');
 
         $response->assertStatus(200)
@@ -128,7 +128,7 @@ describe('API Authentication', function (): void {
 
         $token = $loginResponse->json('access_token');
 
-        $response = $this->withHeader('Authorization', "Bearer {$token}")
+        $response = $this->withHeader('Authorization', 'Bearer '.$token)
             ->postJson('/api/auth/logout');
 
         $response->assertStatus(200)
@@ -149,10 +149,10 @@ describe('API Authentication', function (): void {
 
         $token = $loginResponse->json('access_token');
 
-        $this->withHeader('Authorization', "Bearer {$token}")
+        $this->withHeader('Authorization', 'Bearer '.$token)
             ->postJson('/api/auth/logout');
 
-        $response = $this->withHeader('Authorization', "Bearer {$token}")
+        $response = $this->withHeader('Authorization', 'Bearer '.$token)
             ->getJson('/api/auth/me');
 
         $response->assertStatus(401);
@@ -166,7 +166,7 @@ describe('API Authentication', function (): void {
 
         $token = $loginResponse->json('access_token');
 
-        $response = $this->withHeader('Authorization', "Bearer {$token}")
+        $response = $this->withHeader('Authorization', 'Bearer '.$token)
             ->getJson('/api/auth/me');
 
         $response->assertStatus(200)
@@ -212,10 +212,11 @@ describe('API Authentication', function (): void {
 
         $token = $loginResponse->json('access_token');
 
-        $response = $this->withHeader('Authorization', "Bearer {$token}")
+        $response = $this->withHeader('Authorization', 'Bearer '.$token)
             ->getJson('/api/auth/me');
 
         $response->assertStatus(200);
+
         expect($response->json('data.branch_id'))->toBe(1);
     });
 });
