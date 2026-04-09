@@ -72,7 +72,7 @@ test('can view single batch', function (): void {
     $batch = Batch::factory()->create();
 
     $response = $this->actingAs($this->user, 'api')
-        ->getJson("/api/batches/{$batch->id}");
+        ->getJson('/api/batches/'.$batch->id);
 
     $response->assertOk()
         ->assertJsonPath('data.id', $batch->id)
@@ -83,7 +83,7 @@ test('can update batch', function (): void {
     $batch = Batch::factory()->create();
 
     $response = $this->actingAs($this->user, 'api')
-        ->putJson("/api/batches/{$batch->id}", [
+        ->putJson('/api/batches/'.$batch->id, [
             'status' => 'blocked',
             'notes' => 'Quality issue detected',
         ]);
@@ -97,7 +97,7 @@ test('can delete batch', function (): void {
     $batch = Batch::factory()->create();
 
     $response = $this->actingAs($this->user, 'api')
-        ->deleteJson("/api/batches/{$batch->id}");
+        ->deleteJson('/api/batches/'.$batch->id);
 
     $response->assertOk();
 
@@ -240,7 +240,7 @@ test('can update remaining quantity', function (): void {
     ]);
 
     $response = $this->actingAs($this->user, 'api')
-        ->putJson("/api/batches/{$batch->id}", [
+        ->putJson('/api/batches/'.$batch->id, [
             'remaining_quantity' => 75.5,
         ]);
 
@@ -254,7 +254,7 @@ test('validates remaining quantity cannot exceed total quantity', function (): v
     ]);
 
     $response = $this->actingAs($this->user, 'api')
-        ->putJson("/api/batches/{$batch->id}", [
+        ->putJson('/api/batches/'.$batch->id, [
             'remaining_quantity' => 150,
         ]);
 
@@ -267,7 +267,7 @@ test('can assign batch to warehouse location', function (): void {
     $location = WarehouseLocation::factory()->create();
 
     $response = $this->actingAs($this->user, 'api')
-        ->putJson("/api/batches/{$batch->id}", [
+        ->putJson('/api/batches/'.$batch->id, [
             'warehouse_location_id' => $location->id,
             'status' => 'in_storage',
         ]);
@@ -333,7 +333,7 @@ test('trims nullable fields in update batch request', function (): void {
     $batch = Batch::factory()->create();
 
     $response = $this->actingAs($this->user, 'api')
-        ->putJson("/api/batches/{$batch->id}", [
+        ->putJson('/api/batches/'.$batch->id, [
             'import_declaration_number' => '  IMP-UPDATED  ',
             'local_production_number' => '  LOC-UPDATED  ',
             'packaging_condition' => '  Updated condition  ',
@@ -359,7 +359,7 @@ test('can update batch with nullable fields set to null', function (): void {
     ]);
 
     $response = $this->actingAs($this->user, 'api')
-        ->putJson("/api/batches/{$batch->id}", [
+        ->putJson('/api/batches/'.$batch->id, [
             'import_declaration_number' => null,
             'packaging_condition' => null,
             'notes' => null,
@@ -380,7 +380,7 @@ test('can update batch number and unit', function (): void {
     ]);
 
     $response = $this->actingAs($this->user, 'api')
-        ->putJson("/api/batches/{$batch->id}", [
+        ->putJson('/api/batches/'.$batch->id, [
             'batch_number' => '  NEW-001  ',
             'unit' => '  l  ',
         ]);
@@ -403,7 +403,7 @@ test('loads product and warehouse location relationships', function (): void {
     ]);
 
     $response = $this->actingAs($this->user, 'api')
-        ->getJson("/api/batches/{$batch->id}");
+        ->getJson('/api/batches/'.$batch->id);
 
     $response->assertOk()
         ->assertJsonStructure([

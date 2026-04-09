@@ -27,7 +27,7 @@ describe('API Permissions', function (): void {
 
         $token = $loginResponse->json('access_token');
 
-        $response = $this->withHeader('Authorization', "Bearer {$token}")
+        $response = $this->withHeader('Authorization', 'Bearer '.$token)
             ->getJson('/api/permissions');
 
         $response->assertStatus(200)
@@ -57,7 +57,7 @@ describe('API Permissions', function (): void {
 
         $token = $loginResponse->json('access_token');
 
-        $response = $this->withHeader('Authorization', "Bearer {$token}")
+        $response = $this->withHeader('Authorization', 'Bearer '.$token)
             ->getJson('/api/permissions');
 
         $response->assertStatus(200);
@@ -76,7 +76,7 @@ describe('API Permissions', function (): void {
 
         $token = $loginResponse->json('access_token');
 
-        $response = $this->withHeader('Authorization', "Bearer {$token}")
+        $response = $this->withHeader('Authorization', 'Bearer '.$token)
             ->getJson('/api/permissions');
 
         $response->assertStatus(200);
@@ -105,7 +105,7 @@ describe('API Permissions', function (): void {
 
         $token = $loginResponse->json('access_token');
 
-        $response = $this->withHeader('Authorization', "Bearer {$token}")
+        $response = $this->withHeader('Authorization', 'Bearer '.$token)
             ->getJson('/api/permissions');
 
         $response->assertStatus(200);
@@ -134,7 +134,7 @@ describe('API Permissions', function (): void {
 
         $token = $loginResponse->json('access_token');
 
-        $response = $this->withHeader('Authorization', "Bearer {$token}")
+        $response = $this->withHeader('Authorization', 'Bearer '.$token)
             ->getJson('/api/permissions');
 
         $response->assertStatus(200);
@@ -156,7 +156,7 @@ describe('API Permissions', function (): void {
 
         $token = $loginResponse->json('access_token');
 
-        $response = $this->withHeader('Authorization', "Bearer {$token}")
+        $response = $this->withHeader('Authorization', 'Bearer '.$token)
             ->getJson('/api/permissions');
 
         $response->assertStatus(200);

@@ -2,9 +2,21 @@
 
 declare(strict_types=1);
 
+use Rector\Caching\ValueObject\Storage\FileCacheStorage;
+use Rector\CodingStyle\Rector\ClassMethod\MakeInheritedMethodVisibilitySameAsParentRector;
 use Rector\Config\RectorConfig;
+use Rector\Php83\Rector\ClassMethod\AddOverrideAttributeToOverriddenMethodsRector;
+use Rector\Php85\Rector\Property\AddOverrideAttributeToOverriddenPropertiesRector;
 
 return RectorConfig::configure()
+    ->withImportNames(
+        removeUnusedImports: true,
+    )
+    ->withComposerBased(laravel: true)
+    ->withCache(
+        cacheDirectory: '/tmp/rector',
+        cacheClass: FileCacheStorage::class,
+    )
     ->withPaths([
         __DIR__.'/app',
         __DIR__.'/bootstrap',
@@ -14,8 +26,17 @@ return RectorConfig::configure()
         __DIR__.'/routes',
         __DIR__.'/tests',
     ])
-    // uncomment to reach your current PHP version
-    // ->withPhpSets()
-    ->withTypeCoverageLevel(0)
-    ->withDeadCodeLevel(0)
-    ->withCodeQualityLevel(0);
+    ->withSkip([
+        AddOverrideAttributeToOverriddenMethodsRector::class,
+        MakeInheritedMethodVisibilitySameAsParentRector::class,
+        AddOverrideAttributeToOverriddenPropertiesRector::class,
+    ])
+    ->withPreparedSets(
+        deadCode: true,
+        codeQuality: true,
+        codingStyle: true,
+        typeDeclarations: true,
+        privatization: true,
+        earlyReturn: true,
+    )
+    ->withPhpSets();

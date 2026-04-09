@@ -11,7 +11,11 @@ final class TicketPolicy
 {
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_ticket') || $user->can('create_ticket');
+        if ($user->can('view_any_ticket')) {
+            return true;
+        }
+
+        return $user->can('create_ticket');
     }
 
     public function view(User $user, Ticket $ticket): bool
@@ -37,7 +41,7 @@ final class TicketPolicy
         return $user->can('update_ticket');
     }
 
-    public function delete(User $user, Ticket $ticket): bool
+    public function delete(User $user): bool
     {
         return $user->can('delete_ticket');
     }
@@ -69,12 +73,12 @@ final class TicketPolicy
         return $user->can('update_ticket');
     }
 
-    public function restore(User $user, Ticket $ticket): bool
+    public function restore(User $user): bool
     {
         return $user->can('restore_ticket');
     }
 
-    public function forceDelete(User $user, Ticket $ticket): bool
+    public function forceDelete(User $user): bool
     {
         return $user->can('force_delete_ticket');
     }

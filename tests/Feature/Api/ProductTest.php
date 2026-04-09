@@ -218,7 +218,7 @@ test('can view product with manufacturer', function (): void {
     $product = Product::factory()->create(['manufacturer_id' => $manufacturer->id]);
 
     $response = $this->actingAs($this->user, 'api')
-        ->getJson("/api/products/{$product->id}");
+        ->getJson('/api/products/'.$product->id);
 
     $response->assertOk()
         ->assertJson([
@@ -244,7 +244,7 @@ test('can update product', function (): void {
     ];
 
     $response = $this->actingAs($this->user, 'api')
-        ->putJson("/api/products/{$product->id}", $data);
+        ->putJson('/api/products/'.$product->id, $data);
 
     $response->assertOk()
         ->assertJson([
@@ -269,7 +269,7 @@ test('can update product sku without conflict', function (): void {
     $data = ['sku' => 'NEW-SKU'];
 
     $response = $this->actingAs($this->user, 'api')
-        ->putJson("/api/products/{$product->id}", $data);
+        ->putJson('/api/products/'.$product->id, $data);
 
     $response->assertOk();
     $this->assertDatabaseHas('products', [
@@ -286,7 +286,7 @@ test('cannot update product with existing sku', function (): void {
     $data = ['sku' => 'SKU-001'];
 
     $response = $this->actingAs($this->user, 'api')
-        ->putJson("/api/products/{$product2->id}", $data);
+        ->putJson('/api/products/'.$product2->id, $data);
 
     $response->assertUnprocessable()
         ->assertJsonValidationErrors(['sku']);
@@ -297,7 +297,7 @@ test('can delete product', function (): void {
     $product = Product::factory()->create(['manufacturer_id' => $manufacturer->id]);
 
     $response = $this->actingAs($this->user, 'api')
-        ->deleteJson("/api/products/{$product->id}");
+        ->deleteJson('/api/products/'.$product->id);
 
     $response->assertOk()
         ->assertJson([
@@ -432,7 +432,7 @@ test('can update nullable fields to null', function (): void {
     ];
 
     $response = $this->actingAs($this->user, 'api')
-        ->putJson("/api/products/{$product->id}", $data);
+        ->putJson('/api/products/'.$product->id, $data);
 
     $response->assertOk();
     $this->assertDatabaseHas('products', [
@@ -457,7 +457,7 @@ test('trims whitespace in nullable fields on update', function (): void {
     ];
 
     $response = $this->actingAs($this->user, 'api')
-        ->putJson("/api/products/{$product->id}", $data);
+        ->putJson('/api/products/'.$product->id, $data);
 
     $response->assertOk();
     $this->assertDatabaseHas('products', [

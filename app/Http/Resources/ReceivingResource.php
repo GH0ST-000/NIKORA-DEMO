@@ -26,7 +26,7 @@ final class ReceivingResource extends JsonResource
             'receipt_datetime' => $this->receipt_datetime->toISOString(),
             'supplier_invoice_number' => $this->supplier_invoice_number,
             'batch_id' => $this->batch_id,
-            'batch' => $this->whenLoaded('batch', fn () => [
+            'batch' => $this->whenLoaded('batch', fn (): array => [
                 'id' => $this->batch->id,
                 'batch_number' => $this->batch->batch_number,
                 'product' => $this->batch->relationLoaded('product') ? [
@@ -36,20 +36,20 @@ final class ReceivingResource extends JsonResource
                 ] : null,
             ]),
             'warehouse_location_id' => $this->warehouse_location_id,
-            'warehouse_location' => $this->whenLoaded('warehouseLocation', fn () => [
+            'warehouse_location' => $this->whenLoaded('warehouseLocation', fn (): array => [
                 'id' => $this->warehouseLocation->id,
                 'name' => $this->warehouseLocation->name,
                 'code' => $this->warehouseLocation->code,
                 'type' => $this->warehouseLocation->type,
             ]),
             'received_by_user_id' => $this->received_by_user_id,
-            'received_by' => $this->whenLoaded('receivedBy', fn () => [
+            'received_by' => $this->whenLoaded('receivedBy', fn (): array => [
                 'id' => $this->receivedBy->id,
                 'name' => $this->receivedBy->name,
                 'email' => $this->receivedBy->email,
             ]),
             'verified_by_user_id' => $this->verified_by_user_id,
-            'verified_by' => $this->whenLoaded('verifiedBy', fn () => $this->verifiedBy ? [
+            'verified_by' => $this->whenLoaded('verifiedBy', fn (): ?array => $this->verifiedBy ? [
                 'id' => $this->verifiedBy->id,
                 'name' => $this->verifiedBy->name,
                 'email' => $this->verifiedBy->email,

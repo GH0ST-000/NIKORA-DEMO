@@ -45,22 +45,22 @@ final class RecallPolicy
         return false;
     }
 
-    public function delete(User $user, Recall $recall): bool
+    public function delete(User $user): bool
     {
         return $user->hasPermissionTo('delete_recall', 'web');
     }
 
-    public function restore(User $user, Recall $recall): bool
+    public function restore(User $user): bool
     {
         return $user->hasPermissionTo('restore_recall', 'web');
     }
 
-    public function forceDelete(User $user, Recall $recall): bool
+    public function forceDelete(User $user): bool
     {
         return $user->hasPermissionTo('force_delete_recall', 'web');
     }
 
-    public function approve(User $user, Recall $recall): bool
+    public function approve(User $user): bool
     {
         return $user->hasPermissionTo('approve_recall', 'web');
     }

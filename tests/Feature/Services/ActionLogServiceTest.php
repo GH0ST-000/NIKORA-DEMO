@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\Ticket;
 use App\Models\User;
 use App\Services\ActionLogService;
+use Illuminate\Database\Eloquent\Model;
 
 beforeEach(function (): void {
     $this->service = new ActionLogService;
@@ -191,3 +192,74 @@ test('sanitizes nested sensitive fields in metadata', function (): void {
 
     expect($log->metadata['user'])->toBe(['name' => 'John']);
 });
+
+test('logModelCreated maps numeric string primary key to integer entity id', function (): void {
+    $user = User::factory()->create();
+    auth('api')->login($user);
+
+    $stub = new ActionLogServiceNumericStringKeyModel;
+    $log = $this->service->logModelCreated($stub);
+
+    expect($log->entity_id)->toBe(42);
+    expect($log->description)->toContain('#42');
+});
+
+test('logModelCreated formats bool and null primary keys in description', function (): void {
+    $user = User::factory()->create();
+    auth('api')->login($user);
+
+    $trueKey = new ActionLogServiceBoolKeyModel;
+    $trueKey->stubBoolKey = true;
+    $logTrue = $this->service->logModelCreated($trueKey);
+    expect($logTrue->entity_id)->toBeNull();
+    expect($logTrue->description)->toContain('#1');
+
+    $falseKey = new ActionLogServiceBoolKeyModel;
+    $falseKey->stubBoolKey = false;
+    $logFalse = $this->service->logModelCreated($falseKey);
+    expect($logFalse->entity_id)->toBeNull();
+    expect($logFalse->description)->toContain('#0');
+
+    $nullKey = new ActionLogServiceNullKeyModel;
+    $logNull = $this->service->logModelCreated($nullKey);
+    expect($logNull->entity_id)->toBeNull();
+    expect($logNull->description)->toContain('# created');
+});
+
+final class ActionLogServiceNumericStringKeyModel extends Model
+{
+    public $timestamps = false;
+
+    protected $table = 'action_log_service_stub';
+
+    public function getKey(): mixed
+    {
+        return '42';
+    }
+}
+
+final class ActionLogServiceBoolKeyModel extends Model
+{
+    public $timestamps = false;
+
+    public bool $stubBoolKey = true;
+
+    protected $table = 'action_log_service_stub';
+
+    public function getKey(): mixed
+    {
+        return $this->stubBoolKey;
+    }
+}
+
+final class ActionLogServiceNullKeyModel extends Model
+{
+    public $timestamps = false;
+
+    protected $table = 'action_log_service_stub';
+
+    public function getKey(): mixed
+    {
+        return null;
+    }
+}

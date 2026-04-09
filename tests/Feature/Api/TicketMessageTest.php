@@ -27,7 +27,7 @@ test('can list messages for a ticket', function (): void {
     ]);
 
     $response = $this->actingAs($this->user, 'api')
-        ->getJson("/api/tickets/{$ticket->id}/messages");
+        ->getJson(sprintf('/api/tickets/%d/messages', $ticket->id));
 
     $response->assertOk()
         ->assertJsonCount(5, 'data')
@@ -53,7 +53,7 @@ test('can add a message to a ticket', function (): void {
     ];
 
     $response = $this->actingAs($this->user, 'api')
-        ->postJson("/api/tickets/{$ticket->id}/messages", $data);
+        ->postJson(sprintf('/api/tickets/%d/messages', $ticket->id), $data);
 
     $response->assertCreated()
         ->assertJson([
@@ -79,7 +79,7 @@ test('cannot add message to closed ticket', function (): void {
     ];
 
     $response = $this->actingAs($this->user, 'api')
-        ->postJson("/api/tickets/{$ticket->id}/messages", $data);
+        ->postJson(sprintf('/api/tickets/%d/messages', $ticket->id), $data);
 
     $response->assertUnprocessable();
 });
@@ -88,7 +88,7 @@ test('cannot add message without body', function (): void {
     $ticket = Ticket::factory()->open()->create(['user_id' => $this->user->id]);
 
     $response = $this->actingAs($this->user, 'api')
-        ->postJson("/api/tickets/{$ticket->id}/messages", []);
+        ->postJson(sprintf('/api/tickets/%d/messages', $ticket->id), []);
 
     $response->assertUnprocessable()
         ->assertJsonValidationErrors(['body']);
@@ -105,7 +105,7 @@ test('customer can add message to own ticket', function (): void {
     ];
 
     $response = $this->actingAs($customer, 'api')
-        ->postJson("/api/tickets/{$ticket->id}/messages", $data);
+        ->postJson(sprintf('/api/tickets/%d/messages', $ticket->id), $data);
 
     $response->assertCreated();
 });
@@ -121,7 +121,7 @@ test('customer cannot add message to other users ticket', function (): void {
     ];
 
     $response = $this->actingAs($customer, 'api')
-        ->postJson("/api/tickets/{$otherTicket->id}/messages", $data);
+        ->postJson(sprintf('/api/tickets/%d/messages', $otherTicket->id), $data);
 
     $response->assertForbidden();
 });
@@ -144,7 +144,7 @@ test('messages are ordered chronologically', function (): void {
     ]);
 
     $response = $this->actingAs($this->user, 'api')
-        ->getJson("/api/tickets/{$ticket->id}/messages");
+        ->getJson(sprintf('/api/tickets/%d/messages', $ticket->id));
 
     $response->assertOk();
 
@@ -161,7 +161,7 @@ test('trims message body whitespace', function (): void {
     ];
 
     $response = $this->actingAs($customer ?? $this->user, 'api')
-        ->postJson("/api/tickets/{$ticket->id}/messages", $data);
+        ->postJson(sprintf('/api/tickets/%d/messages', $ticket->id), $data);
 
     $response->assertCreated();
     $this->assertDatabaseHas('ticket_messages', [
@@ -178,7 +178,7 @@ test('messages include user information', function (): void {
     ]);
 
     $response = $this->actingAs($this->user, 'api')
-        ->getJson("/api/tickets/{$ticket->id}/messages");
+        ->getJson(sprintf('/api/tickets/%d/messages', $ticket->id));
 
     $response->assertOk()
         ->assertJsonStructure([

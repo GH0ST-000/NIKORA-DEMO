@@ -58,7 +58,7 @@ final class AuthController extends Controller
         return new UserResource($user);
     }
 
-    protected function respondWithToken(string $token): JsonResponse
+    private function respondWithToken(string $token): JsonResponse
     {
         return response()->json([
             'access_token' => $token,

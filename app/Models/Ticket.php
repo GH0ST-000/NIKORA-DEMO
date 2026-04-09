@@ -148,8 +148,8 @@ final class Ticket extends Model
     public function scopeSearch(Builder $query, string $keyword): Builder
     {
         return $query->where(function (Builder $q) use ($keyword): void {
-            $q->where('title', 'like', "%{$keyword}%")
-                ->orWhere('description', 'like', "%{$keyword}%");
+            $q->where('title', 'like', sprintf('%%%s%%', $keyword))
+                ->orWhere('description', 'like', sprintf('%%%s%%', $keyword));
         });
     }
 

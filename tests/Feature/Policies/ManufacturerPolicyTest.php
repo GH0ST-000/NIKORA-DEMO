@@ -21,6 +21,7 @@ describe('ManufacturerPolicy', function (): void {
     test('recall admin can view manufacturer', function (): void {
         $admin = User::factory()->create();
         $admin->assignRole('Recall Admin');
+
         $manufacturer = Manufacturer::factory()->create();
 
         expect($admin->can('view', $manufacturer))->toBeTrue();
@@ -36,6 +37,7 @@ describe('ManufacturerPolicy', function (): void {
     test('recall admin can update manufacturer', function (): void {
         $admin = User::factory()->create();
         $admin->assignRole('Recall Admin');
+
         $manufacturer = Manufacturer::factory()->create();
 
         expect($admin->can('update', $manufacturer))->toBeTrue();
@@ -44,6 +46,7 @@ describe('ManufacturerPolicy', function (): void {
     test('recall admin can delete manufacturer', function (): void {
         $admin = User::factory()->create();
         $admin->assignRole('Recall Admin');
+
         $manufacturer = Manufacturer::factory()->create();
 
         expect($admin->can('delete', $manufacturer))->toBeTrue();
@@ -52,6 +55,7 @@ describe('ManufacturerPolicy', function (): void {
     test('recall admin can restore manufacturer', function (): void {
         $admin = User::factory()->create();
         $admin->assignRole('Recall Admin');
+
         $manufacturer = Manufacturer::factory()->create();
 
         expect($admin->can('restore', $manufacturer))->toBeTrue();
@@ -60,6 +64,7 @@ describe('ManufacturerPolicy', function (): void {
     test('recall admin can force delete manufacturer', function (): void {
         $admin = User::factory()->create();
         $admin->assignRole('Recall Admin');
+
         $manufacturer = Manufacturer::factory()->create();
 
         expect($admin->can('forceDelete', $manufacturer))->toBeTrue();
@@ -82,6 +87,7 @@ describe('ManufacturerPolicy', function (): void {
     test('branch manager cannot access manufacturers', function (): void {
         $manager = User::factory()->create();
         $manager->assignRole('Branch Manager');
+
         $manufacturer = Manufacturer::factory()->create();
 
         expect($manager->can('viewAny', Manufacturer::class))->toBeFalse()

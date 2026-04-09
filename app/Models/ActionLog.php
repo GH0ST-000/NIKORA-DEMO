@@ -27,7 +27,9 @@ use Laravel\Scout\Searchable;
 final class ActionLog extends Model
 {
     /** @use HasFactory<ActionLogFactory> */
-    use HasFactory, Searchable;
+    use HasFactory;
+
+    use Searchable;
 
     public $timestamps = false;
 

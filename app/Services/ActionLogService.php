@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 
 final class ActionLogService
 {
-    private const SENSITIVE_FIELDS = [
+    private const array SENSITIVE_FIELDS = [
         'password',
         'password_confirmation',
         'remember_token',
@@ -20,7 +20,7 @@ final class ActionLogService
         'refresh_token',
     ];
 
-    private const ENTITY_MODULE_MAP = [
+    private const array ENTITY_MODULE_MAP = [
         'manufacturer' => 'manufacturers',
         'product' => 'products',
         'batch' => 'batches',
@@ -67,9 +67,9 @@ final class ActionLogService
         return $this->log(
             actionType: 'create',
             entityType: $entityType,
-            entityId: $model->getKey(),
+            entityId: $this->entityIdFromModel($model),
             module: $module,
-            description: $description ?? ucfirst(str_replace('_', ' ', $entityType))." #{$model->getKey()} created",
+            description: $description ?? ucfirst(str_replace('_', ' ', $entityType)).sprintf(' #%s created', $this->entityIdForDescription($model)),
             metadata: $metadata,
         );
     }
@@ -91,9 +91,9 @@ final class ActionLogService
         return $this->log(
             actionType: 'update',
             entityType: $entityType,
-            entityId: $model->getKey(),
+            entityId: $this->entityIdFromModel($model),
             module: $module,
-            description: $description ?? ucfirst(str_replace('_', ' ', $entityType))." #{$model->getKey()} updated",
+            description: $description ?? ucfirst(str_replace('_', ' ', $entityType)).sprintf(' #%s updated', $this->entityIdForDescription($model)),
             metadata: $logMetadata !== [] ? $logMetadata : null,
         );
     }
@@ -106,9 +106,9 @@ final class ActionLogService
         return $this->log(
             actionType: 'delete',
             entityType: $entityType,
-            entityId: $model->getKey(),
+            entityId: $this->entityIdFromModel($model),
             module: $module,
-            description: $description ?? ucfirst(str_replace('_', ' ', $entityType))." #{$model->getKey()} deleted",
+            description: $description ?? ucfirst(str_replace('_', ' ', $entityType)).sprintf(' #%s deleted', $this->entityIdForDescription($model)),
         );
     }
 
@@ -120,9 +120,9 @@ final class ActionLogService
         return $this->log(
             actionType: 'status_change',
             entityType: $entityType,
-            entityId: $model->getKey(),
+            entityId: $this->entityIdFromModel($model),
             module: $module,
-            description: $description ?? ucfirst(str_replace('_', ' ', $entityType))." #{$model->getKey()} status changed from {$oldStatus} to {$newStatus}",
+            description: $description ?? ucfirst(str_replace('_', ' ', $entityType)).sprintf(' #%s status changed from %s to %s', $this->entityIdForDescription($model), $oldStatus, $newStatus),
             metadata: [
                 'old_status' => $oldStatus,
                 'new_status' => $newStatus,
@@ -137,7 +137,7 @@ final class ActionLogService
             entityType: 'user',
             entityId: $userId,
             module: 'users',
-            description: "User #{$userId} logged in",
+            description: sprintf('User #%d logged in', $userId),
             userId: $userId,
         );
     }
@@ -149,9 +149,32 @@ final class ActionLogService
             entityType: 'user',
             entityId: $userId,
             module: 'users',
-            description: "User #{$userId} logged out",
+            description: sprintf('User #%d logged out', $userId),
             userId: $userId,
         );
+    }
+
+    private function entityIdFromModel(Model $model): ?int
+    {
+        $key = $model->getKey();
+
+        return match (true) {
+            is_int($key) => $key,
+            is_string($key) && $key !== '' && ctype_digit($key) => (int) $key,
+            default => null,
+        };
+    }
+
+    private function entityIdForDescription(Model $model): string
+    {
+        $key = $model->getKey();
+
+        return match (true) {
+            is_int($key), is_float($key), is_string($key) => (string) $key,
+            is_bool($key) => $key ? '1' : '0',
+            $key === null => '',
+            default => (string) json_encode($key),
+        };
     }
 
     private function resolveEntityType(Model $model): string

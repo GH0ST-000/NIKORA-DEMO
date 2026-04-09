@@ -34,7 +34,10 @@ use Spatie\Permission\Traits\HasRoles;
 final class User extends Authenticatable implements FilamentUser, JWTSubject
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, HasRoles, Notifiable;
+    use HasFactory;
+
+    use HasRoles;
+    use Notifiable;
 
     public function canAccessPanel(Panel $panel): bool
     {

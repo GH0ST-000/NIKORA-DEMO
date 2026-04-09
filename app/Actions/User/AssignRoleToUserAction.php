@@ -23,7 +23,7 @@ final readonly class AssignRoleToUserAction
             entityType: 'user',
             entityId: $user->id,
             module: 'users',
-            description: "Role '{$roleName}' assigned to User #{$user->id}",
+            description: sprintf("Role '%s' assigned to User #%d", $roleName, $user->id),
             metadata: ['role' => $roleName],
         );
 

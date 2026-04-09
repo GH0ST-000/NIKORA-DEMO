@@ -32,22 +32,22 @@ final class BranchPolicy
         return $user->hasPermissionTo('create_branch', 'web');
     }
 
-    public function update(User $user, Branch $branch): bool
+    public function update(User $user): bool
     {
         return $user->hasPermissionTo('update_branch', 'web');
     }
 
-    public function delete(User $user, Branch $branch): bool
+    public function delete(User $user): bool
     {
         return $user->hasPermissionTo('delete_branch', 'web');
     }
 
-    public function restore(User $user, Branch $branch): bool
+    public function restore(User $user): bool
     {
         return $user->hasPermissionTo('restore_branch', 'web');
     }
 
-    public function forceDelete(User $user, Branch $branch): bool
+    public function forceDelete(User $user): bool
     {
         return $user->hasPermissionTo('force_delete_branch', 'web');
     }
