@@ -35,11 +35,33 @@ test('can assign ticket to agent', function (): void {
     expect($updated->assigned_to)->toBe($agent->id);
 });
 
-test('returns fresh model after update', function (): void {
+test('returns updated model after update', function (): void {
     $ticket = Ticket::factory()->create(['priority' => 'low']);
 
     $action = app(UpdateTicketAction::class);
     $updated = $action->execute($ticket, ['priority' => 'high']);
 
     expect($updated->priority)->toBe('high');
+});
+
+test('notifies when status becomes closed via update', function (): void {
+    $ticket = Ticket::factory()->open()->create();
+
+    app(UpdateTicketAction::class)->execute($ticket, [
+        'status' => 'closed',
+        'closed_at' => now(),
+    ]);
+
+    expect($ticket->fresh()->status)->toBe('closed');
+});
+
+test('notifies when ticket is reopened via update', function (): void {
+    $ticket = Ticket::factory()->closed()->create();
+
+    app(UpdateTicketAction::class)->execute($ticket, [
+        'status' => 'open',
+        'closed_at' => null,
+    ]);
+
+    expect($ticket->fresh()->status)->toBe('open');
 });

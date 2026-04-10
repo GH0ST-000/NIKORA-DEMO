@@ -6,11 +6,14 @@ namespace App\Actions\Ticket;
 
 use App\Models\Ticket;
 use App\Services\ActionLogService;
+use App\Services\NotificationService;
+use App\Support\ApiActor;
 
 final readonly class CreateTicketAction
 {
     public function __construct(
         private ActionLogService $actionLogService,
+        private NotificationService $notificationService,
     ) {}
 
     /**
@@ -18,13 +21,15 @@ final readonly class CreateTicketAction
      */
     public function execute(array $data): Ticket
     {
-        $ticket = Ticket::create(array_merge([
+        $model = Ticket::query()->create(array_merge([
             'status' => 'open',
             'priority' => 'medium',
         ], $data));
 
-        $this->actionLogService->logModelCreated($ticket);
+        $this->actionLogService->logModelCreated($model);
 
-        return $ticket;
+        $this->notificationService->notifyTicketCreated($model, ApiActor::id());
+
+        return $model;
     }
 }

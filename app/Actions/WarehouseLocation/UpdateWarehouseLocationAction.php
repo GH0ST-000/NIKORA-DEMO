@@ -6,11 +6,14 @@ namespace App\Actions\WarehouseLocation;
 
 use App\Models\WarehouseLocation;
 use App\Services\ActionLogService;
+use App\Services\NotificationService;
+use App\Support\ApiActor;
 
 final readonly class UpdateWarehouseLocationAction
 {
     public function __construct(
         private ActionLogService $actionLogService,
+        private NotificationService $notificationService,
     ) {}
 
     /**
@@ -22,6 +25,8 @@ final readonly class UpdateWarehouseLocationAction
 
         $this->actionLogService->logModelUpdated($location, $location->getChanges());
 
-        return $location->fresh();
+        $this->notificationService->notifyWarehouseLocationUpdated($location, ApiActor::id());
+
+        return $location;
     }
 }

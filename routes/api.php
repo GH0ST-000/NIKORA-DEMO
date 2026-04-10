@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\BatchController;
 use App\Http\Controllers\Api\ChatController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\ManufacturerController;
+use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\PermissionController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\ReceivingController;
@@ -26,6 +27,13 @@ Route::prefix('auth')->group(function (): void {
 });
 
 Route::middleware('auth:api')->group(function (): void {
+    Route::get('notifications/unread-count', [NotificationController::class, 'unreadCount']);
+    Route::patch('notifications/read-all', [NotificationController::class, 'markAllAsRead']);
+    Route::patch('notifications/{notification}/read', [NotificationController::class, 'markAsRead']);
+    Route::post('notifications', [NotificationController::class, 'store']);
+    Route::delete('notifications/{notification}', [NotificationController::class, 'destroy']);
+    Route::get('notifications', [NotificationController::class, 'index']);
+
     Route::get('permissions', [PermissionController::class, 'index']);
     Route::get('roles', [RoleController::class, 'index']);
     Route::get('roles/{role}', [RoleController::class, 'show']);

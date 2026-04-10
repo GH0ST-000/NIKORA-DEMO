@@ -6,11 +6,14 @@ namespace App\Actions\Manufacturer;
 
 use App\Models\Manufacturer;
 use App\Services\ActionLogService;
+use App\Services\NotificationService;
+use App\Support\ApiActor;
 
 final readonly class UpdateManufacturerAction
 {
     public function __construct(
         private ActionLogService $actionLogService,
+        private NotificationService $notificationService,
     ) {}
 
     /**
@@ -22,6 +25,9 @@ final readonly class UpdateManufacturerAction
 
         $this->actionLogService->logModelUpdated($manufacturer, $manufacturer->getChanges());
 
-        return $manufacturer->fresh() ?? $manufacturer;
+        $fresh = $manufacturer->fresh() ?? $manufacturer;
+        $this->notificationService->notifyManufacturerUpdated($fresh, ApiActor::id());
+
+        return $fresh;
     }
 }

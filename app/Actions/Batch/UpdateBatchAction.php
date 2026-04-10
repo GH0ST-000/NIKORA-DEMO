@@ -6,11 +6,14 @@ namespace App\Actions\Batch;
 
 use App\Models\Batch;
 use App\Services\ActionLogService;
+use App\Services\NotificationService;
+use App\Support\ApiActor;
 
 final readonly class UpdateBatchAction
 {
     public function __construct(
         private ActionLogService $actionLogService,
+        private NotificationService $notificationService,
     ) {}
 
     /**
@@ -22,6 +25,8 @@ final readonly class UpdateBatchAction
 
         $this->actionLogService->logModelUpdated($batch, $batch->getChanges());
 
-        return $batch->fresh();
+        $this->notificationService->notifyBatchUpdated($batch, ApiActor::id());
+
+        return $batch;
     }
 }

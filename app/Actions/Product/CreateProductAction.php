@@ -6,11 +6,14 @@ namespace App\Actions\Product;
 
 use App\Models\Product;
 use App\Services\ActionLogService;
+use App\Services\NotificationService;
+use App\Support\ApiActor;
 
 final readonly class CreateProductAction
 {
     public function __construct(
         private ActionLogService $actionLogService,
+        private NotificationService $notificationService,
     ) {}
 
     /**
@@ -18,10 +21,12 @@ final readonly class CreateProductAction
      */
     public function execute(array $data): Product
     {
-        $product = Product::create($data);
+        $model = Product::query()->create($data);
 
-        $this->actionLogService->logModelCreated($product);
+        $this->actionLogService->logModelCreated($model);
 
-        return $product;
+        $this->notificationService->notifyProductCreated($model, ApiActor::id());
+
+        return $model;
     }
 }

@@ -6,11 +6,14 @@ namespace App\Actions\User;
 
 use App\Models\User;
 use App\Services\ActionLogService;
+use App\Services\NotificationService;
+use App\Support\ApiActor;
 
 final readonly class AssignRoleToUserAction
 {
     public function __construct(
         private ActionLogService $actionLogService,
+        private NotificationService $notificationService,
     ) {}
 
     public function execute(User $user, string $roleName): User
@@ -26,6 +29,8 @@ final readonly class AssignRoleToUserAction
             description: sprintf("Role '%s' assigned to User #%d", $roleName, $user->id),
             metadata: ['role' => $roleName],
         );
+
+        $this->notificationService->notifyUserRoleAssigned($user, $roleName, ApiActor::id());
 
         return $user;
     }

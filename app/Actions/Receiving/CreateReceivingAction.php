@@ -6,11 +6,14 @@ namespace App\Actions\Receiving;
 
 use App\Models\Receiving;
 use App\Services\ActionLogService;
+use App\Services\NotificationService;
+use App\Support\ApiActor;
 
 final readonly class CreateReceivingAction
 {
     public function __construct(
         private ActionLogService $actionLogService,
+        private NotificationService $notificationService,
     ) {}
 
     /**
@@ -18,10 +21,12 @@ final readonly class CreateReceivingAction
      */
     public function execute(array $data): Receiving
     {
-        $receiving = Receiving::create($data);
+        $model = Receiving::query()->create($data);
 
-        $this->actionLogService->logModelCreated($receiving);
+        $this->actionLogService->logModelCreated($model);
 
-        return $receiving;
+        $this->notificationService->notifyReceivingCreated($model, ApiActor::id());
+
+        return $model;
     }
 }

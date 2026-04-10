@@ -6,11 +6,14 @@ namespace App\Actions\Batch;
 
 use App\Models\Batch;
 use App\Services\ActionLogService;
+use App\Services\NotificationService;
+use App\Support\ApiActor;
 
 final readonly class CreateBatchAction
 {
     public function __construct(
         private ActionLogService $actionLogService,
+        private NotificationService $notificationService,
     ) {}
 
     /**
@@ -20,10 +23,12 @@ final readonly class CreateBatchAction
     {
         $data['remaining_quantity'] = $data['quantity'];
 
-        $batch = Batch::create($data);
+        $model = Batch::query()->create($data);
 
-        $this->actionLogService->logModelCreated($batch);
+        $this->actionLogService->logModelCreated($model);
 
-        return $batch;
+        $this->notificationService->notifyBatchCreated($model, ApiActor::id());
+
+        return $model;
     }
 }
