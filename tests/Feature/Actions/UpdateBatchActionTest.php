@@ -44,7 +44,7 @@ test('persists changes to database', function (): void {
     ]);
 });
 
-test('returns fresh instance', function (): void {
+test('returns updated batch with persisted attributes', function (): void {
     $batch = Batch::factory()->create([
         'remaining_quantity' => 100,
     ]);
@@ -56,6 +56,7 @@ test('returns fresh instance', function (): void {
     $action = app(UpdateBatchAction::class);
     $updated = $action->execute($batch, $data);
 
-    expect($updated->remaining_quantity)->toBe(75.0);
-    expect($updated->wasRecentlyCreated)->toBeFalse();
+    expect($updated->remaining_quantity)->toBe(75.0)
+        ->and($updated->is($batch))->toBeTrue()
+        ->and($updated->fresh()->remaining_quantity)->toBe(75.0);
 });

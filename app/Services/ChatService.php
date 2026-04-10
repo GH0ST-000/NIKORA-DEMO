@@ -14,9 +14,14 @@ use Illuminate\Contracts\Pagination\CursorPaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
-final class ChatService
+final readonly class ChatService
 {
+    public function __construct(
+        private NotificationService $notificationService,
+    ) {}
+
     public function findOrCreateDirectConversation(User $authUser, User $targetUser): Conversation
     {
         $existing = $this->findDirectConversation($authUser->id, $targetUser->id);
@@ -79,6 +84,13 @@ final class ChatService
         $event = new NewChatMessage($message);
         $event->dontBroadcastToCurrentUser();
         event($event);
+
+        $this->notificationService->notifyChatParticipantsExceptSender(
+            conversationId: $conversation->id,
+            sender: $sender,
+            messagePreview: Str::limit($body, 240),
+            messageId: $message->id,
+        );
 
         return $message;
     }

@@ -37,7 +37,7 @@ test('can update single field', function (): void {
     expect($updatedProduct->name)->toBe('New Name');
 });
 
-test('returns fresh model instance', function (): void {
+test('returns updated model with persisted attributes', function (): void {
     $manufacturer = Manufacturer::factory()->create();
     $product = Product::factory()->create(['manufacturer_id' => $manufacturer->id]);
 
@@ -46,9 +46,10 @@ test('returns fresh model instance', function (): void {
     $action = app(UpdateProductAction::class);
     $result = $action->execute($product, $data);
 
-    expect($result)->toBeInstanceOf(Product::class);
-    expect($result->name)->toBe('Fresh Test');
-    expect($result->wasRecentlyCreated)->toBeFalse();
+    expect($result)->toBeInstanceOf(Product::class)
+        ->and($result->is($product))->toBeTrue()
+        ->and($result->name)->toBe('Fresh Test')
+        ->and($result->fresh()->name)->toBe('Fresh Test');
 });
 
 test('can update temperature range', function (): void {

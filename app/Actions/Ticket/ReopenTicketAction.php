@@ -6,11 +6,14 @@ namespace App\Actions\Ticket;
 
 use App\Models\Ticket;
 use App\Services\ActionLogService;
+use App\Services\NotificationService;
+use App\Support\ApiActor;
 
 final readonly class ReopenTicketAction
 {
     public function __construct(
         private ActionLogService $actionLogService,
+        private NotificationService $notificationService,
     ) {}
 
     public function execute(Ticket $ticket): Ticket
@@ -24,6 +27,8 @@ final readonly class ReopenTicketAction
 
         $this->actionLogService->logStatusChange($ticket, $oldStatus, 'open');
 
-        return $ticket->fresh();
+        $this->notificationService->notifyTicketReopened($ticket, ApiActor::id());
+
+        return $ticket;
     }
 }

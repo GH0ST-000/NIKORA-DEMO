@@ -6,11 +6,14 @@ namespace App\Actions\WarehouseLocation;
 
 use App\Models\WarehouseLocation;
 use App\Services\ActionLogService;
+use App\Services\NotificationService;
+use App\Support\ApiActor;
 
 final readonly class CreateWarehouseLocationAction
 {
     public function __construct(
         private ActionLogService $actionLogService,
+        private NotificationService $notificationService,
     ) {}
 
     /**
@@ -18,10 +21,12 @@ final readonly class CreateWarehouseLocationAction
      */
     public function execute(array $data): WarehouseLocation
     {
-        $warehouseLocation = WarehouseLocation::create($data);
+        $model = WarehouseLocation::query()->create($data);
 
-        $this->actionLogService->logModelCreated($warehouseLocation);
+        $this->actionLogService->logModelCreated($model);
 
-        return $warehouseLocation;
+        $this->notificationService->notifyWarehouseLocationCreated($model, ApiActor::id());
+
+        return $model;
     }
 }

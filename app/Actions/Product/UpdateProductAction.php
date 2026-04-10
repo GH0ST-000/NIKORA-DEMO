@@ -6,11 +6,14 @@ namespace App\Actions\Product;
 
 use App\Models\Product;
 use App\Services\ActionLogService;
+use App\Services\NotificationService;
+use App\Support\ApiActor;
 
 final readonly class UpdateProductAction
 {
     public function __construct(
         private ActionLogService $actionLogService,
+        private NotificationService $notificationService,
     ) {}
 
     /**
@@ -22,6 +25,8 @@ final readonly class UpdateProductAction
 
         $this->actionLogService->logModelUpdated($product, $product->getChanges());
 
-        return $product->fresh();
+        $this->notificationService->notifyProductUpdated($product, ApiActor::id());
+
+        return $product;
     }
 }

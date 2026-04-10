@@ -6,11 +6,14 @@ namespace App\Actions\Receiving;
 
 use App\Models\Receiving;
 use App\Services\ActionLogService;
+use App\Services\NotificationService;
+use App\Support\ApiActor;
 
 final readonly class UpdateReceivingAction
 {
     public function __construct(
         private ActionLogService $actionLogService,
+        private NotificationService $notificationService,
     ) {}
 
     /**
@@ -24,6 +27,8 @@ final readonly class UpdateReceivingAction
 
         $result = $receiving->fresh();
         assert($result instanceof Receiving);
+
+        $this->notificationService->notifyReceivingUpdated($result, ApiActor::id());
 
         return $result;
     }

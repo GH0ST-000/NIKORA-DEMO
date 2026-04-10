@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
@@ -50,6 +51,27 @@ final class User extends Authenticatable implements FilamentUser, JWTSubject
     public function branch(): BelongsTo
     {
         return $this->belongsTo(Branch::class);
+    }
+
+    /**
+     * In-app notifications (API `/notifications`, table `app_notifications`).
+     *
+     * @return HasMany<AppNotification, $this>
+     */
+    public function inAppNotifications(): HasMany
+    {
+        return $this->hasMany(AppNotification::class);
+    }
+
+    /**
+     * Whether the user may receive non-chat notification modules (admin roles).
+     */
+    public function receivesBroadSystemNotifications(): bool
+    {
+        /** @var list<string> $roles */
+        $roles = config('notifications.admin_roles', []);
+
+        return $this->hasAnyRole($roles, 'web');
     }
 
     public function getJWTIdentifier(): mixed

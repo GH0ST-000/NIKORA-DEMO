@@ -6,11 +6,14 @@ namespace App\Actions\Manufacturer;
 
 use App\Models\Manufacturer;
 use App\Services\ActionLogService;
+use App\Services\NotificationService;
+use App\Support\ApiActor;
 
 final readonly class CreateManufacturerAction
 {
     public function __construct(
         private ActionLogService $actionLogService,
+        private NotificationService $notificationService,
     ) {}
 
     /**
@@ -18,10 +21,12 @@ final readonly class CreateManufacturerAction
      */
     public function execute(array $data): Manufacturer
     {
-        $manufacturer = Manufacturer::create($data);
+        $model = Manufacturer::query()->create($data);
 
-        $this->actionLogService->logModelCreated($manufacturer);
+        $this->actionLogService->logModelCreated($model);
 
-        return $manufacturer;
+        $this->notificationService->notifyManufacturerCreated($model, ApiActor::id());
+
+        return $model;
     }
 }

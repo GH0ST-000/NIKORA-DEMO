@@ -6,11 +6,14 @@ namespace App\Actions\TicketMessage;
 
 use App\Models\TicketMessage;
 use App\Services\ActionLogService;
+use App\Services\NotificationService;
+use App\Support\ApiActor;
 
 final readonly class CreateTicketMessageAction
 {
     public function __construct(
         private ActionLogService $actionLogService,
+        private NotificationService $notificationService,
     ) {}
 
     /**
@@ -18,10 +21,12 @@ final readonly class CreateTicketMessageAction
      */
     public function execute(array $data): TicketMessage
     {
-        $message = TicketMessage::create($data);
+        $model = TicketMessage::query()->create($data);
 
-        $this->actionLogService->logModelCreated($message);
+        $this->actionLogService->logModelCreated($model);
 
-        return $message;
+        $this->notificationService->notifyTicketMessageCreated($model, ApiActor::id());
+
+        return $model;
     }
 }

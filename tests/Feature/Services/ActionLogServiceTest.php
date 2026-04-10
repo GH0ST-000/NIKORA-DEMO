@@ -210,12 +210,14 @@ test('logModelCreated formats bool and null primary keys in description', functi
 
     $trueKey = new ActionLogServiceBoolKeyModel;
     $trueKey->stubBoolKey = true;
+
     $logTrue = $this->service->logModelCreated($trueKey);
     expect($logTrue->entity_id)->toBeNull();
     expect($logTrue->description)->toContain('#1');
 
     $falseKey = new ActionLogServiceBoolKeyModel;
     $falseKey->stubBoolKey = false;
+
     $logFalse = $this->service->logModelCreated($falseKey);
     expect($logFalse->entity_id)->toBeNull();
     expect($logFalse->description)->toContain('#0');
